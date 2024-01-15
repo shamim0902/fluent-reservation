@@ -7,6 +7,14 @@ class Rooms
 
     public function getRooms(): array
     {
+
+
+
+// sample
+    // fluentReservationDb()->table('wpm_bmc_supporters')
+    //     ->get();
+
+
         return [
             '1' => [
                 'floor' => '4',

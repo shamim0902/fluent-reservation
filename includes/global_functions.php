@@ -15,3 +15,14 @@ function pluginlowercase_getAvatar($email, $size)
         $email
     );
 }
+
+if (!function_exists('fluentReservationDb')) {
+    function fluentReservationDB()
+    {
+        if (!function_exists('wpFluent')) {
+            include FLUENTRESERVATION_DIR . 'includes/libs/wp-fluent/wp-fluent.php';
+        }
+        return wpFluent();
+    }
+}
+
