@@ -35,7 +35,7 @@ export default class AppMixins {
                 ucWords: self.ucWords,
                 slugify: self.slugify,
                 $get: self.$get,
-                $adminGet: self.$adminGet,
+                $adminAjax: self.$adminAjax,
                 $post: self.$post,
                 $del: self.$del,
                 $put: self.$put,
@@ -99,9 +99,11 @@ export default class AppMixins {
     $get(options = {}) {
         return window.jQuery.get(window.fluentReservationVars.ajaxurl, options);
     }
-    $adminGet(options = {}) {
+
+    $adminAjax(options = {}) {
         options.action = "fluent_reservation_admin_ajax"
-        return window.jQuery.get(window.fluentReservationVars.ajaxurl, options);
+        const method = (options.method ?? 'get').toLowerCase();
+        return window.jQuery[method](window.fluentReservationVars.ajaxurl, options);
     }
 
     $post(url, options = {}) {
