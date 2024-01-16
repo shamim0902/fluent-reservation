@@ -1,6 +1,9 @@
 <script setup>
-import {ref} from "vue";
+import {ref, getCurrentInstance} from "vue";
 
+const emit = defineEmits(['onSuccess'])
+
+const $this = getCurrentInstance().ctx;
 const form = ref({
   room_no: '',
   floor_no: '',
@@ -8,8 +11,28 @@ const form = ref({
   info: ''
 })
 
+const requiredFields = ['room_no', 'floor_no', 'total_seat'];
+const validationErrors = ref({});
+
 const addRoom = () => {
-  console.log(form.value)
+  validationErrors.value = {};
+  Object.keys(form.value).forEach((key) => {
+    const value = form.value[key];
+    if (value.length < 1 && requiredFields.includes(key)) {
+      validationErrors.value[key] = key + ' Is Required';
+    }
+  })
+  if (!Object.keys(validationErrors.value).length) {
+    $this.$adminAjax({
+      route: 'addRoom',
+      nonce: window.fluentReservationVars.nonce,
+      method: 'post',
+      data: form.value
+    })
+        .then(res => {
+          emit('onSuccess', res.data)
+        });
+  }
 }
 </script>
 
@@ -18,14 +41,17 @@ const addRoom = () => {
   <el-form :model="form" label-position="top">
     <el-form-item label="Room Number">
       <el-input v-model="form.room_no" autocomplete="off"/>
+      <span v-if="validationErrors['room_no']"> {{ validationErrors['room_no'] }}</span>
     </el-form-item>
 
     <el-form-item label="Floor Number">
       <el-input v-model="form.floor_no" autocomplete="off"/>
+      <span v-if="validationErrors['floor_no']"> {{ validationErrors['room_no'] }}</span>
     </el-form-item>
 
     <el-form-item label="Total Seat">
       <el-input v-model="form.total_seat" autocomplete="off"/>
+      <span v-if="validationErrors['room_no']"> {{ validationErrors['room_no'] }}</span>
     </el-form-item>
 
     <el-form-item label="Room Info">

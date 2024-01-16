@@ -61,7 +61,6 @@ class AdminAjaxHandler
     public function addRoom()
     {
 
-        return "sdsd";
         if ((new Rooms())->addRoom($_REQUEST['data'])) {
             return wp_send_json_success(
                 [
@@ -70,7 +69,7 @@ class AdminAjaxHandler
                 , 200);
         } else {
             return wp_send_json_error([
-                'message' => "Cant add room"
+                'message' => "Can't add room"
             ]);
         }
     }
