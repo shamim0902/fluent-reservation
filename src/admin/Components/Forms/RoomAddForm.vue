@@ -13,11 +13,10 @@ const form = ref({
 
 const requiredFields = ['room_no', 'floor_no', 'total_seat'];
 const validationErrors = ref({});
-
 const addRoom = () => {
   validationErrors.value = {};
   Object.keys(form.value).forEach((key) => {
-    const value = form.value[key];
+    const value = (form.value[key] ?? "").toString();
     if (value.length < 1 && requiredFields.includes(key)) {
       validationErrors.value[key] = key + ' Is Required';
     }
@@ -34,6 +33,19 @@ const addRoom = () => {
         });
   }
 }
+
+const clearForm = () => {
+  form.value = {
+    room_no: '',
+    floor_no: '',
+    total_seat: 0,
+    info: ''
+  };
+}
+
+defineExpose({clearForm})
+
+
 </script>
 
 <template>

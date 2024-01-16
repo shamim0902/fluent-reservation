@@ -39,6 +39,7 @@ class AdminAjaxHandler
         $validRoutes = [
             'getRooms' => 'getRooms',
             'addRoom' => 'addRoom',
+            'updateRoom' => 'updateRoom'
         ];
 
         if (isset($validRoutes[$route])) {
@@ -62,6 +63,22 @@ class AdminAjaxHandler
     {
 
         if ((new Rooms())->addRoom($_REQUEST['data'])) {
+            return wp_send_json_success(
+                [
+                    'rooms' => (new Rooms())->getRooms()
+                ]
+                , 200);
+        } else {
+            return wp_send_json_error([
+                'message' => "Can't add room"
+            ]);
+        }
+    }
+
+    public function updateRoom()
+    {
+
+        if ((new Rooms())->updateRoom($_REQUEST['data'])) {
             return wp_send_json_success(
                 [
                     'rooms' => (new Rooms())->getRooms()
