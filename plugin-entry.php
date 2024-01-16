@@ -27,6 +27,12 @@ class fluentReservation {
         $this->disableUpdateNag();
         $this->loadTextDomain();
         $this->registerAdminAjax();
+        $this->registerShortCode();
+    }
+
+    public function registerShortCode()
+    {
+        (new \fluentReservation\Classes\ShortCode())->register();
     }
 
     public function loadClasses()
