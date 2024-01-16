@@ -1,6 +1,10 @@
 import('tailwindcss').Config
 module.exports = {
-  content: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: [
+      './includes/Views/**/*.{php,html}',
+      './public/**/*.html',
+      './src/**/*.{vue,js,ts,jsx,tsx}'
+  ],
   theme: {
     extend: {},
   },

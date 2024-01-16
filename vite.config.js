@@ -38,7 +38,7 @@ export default defineConfig({
     rollupOptions: {
       input: [
         'src/admin/start.js',
-        // 'src/style.scss',
+        'src/style.css',
         // 'src/assets'
       ],
       output: {
