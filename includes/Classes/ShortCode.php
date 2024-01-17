@@ -2,6 +2,7 @@
 
 namespace fluentReservation\Classes;
 
+use fluentReservation\Models\Bookings;
 use fluentReservation\Models\Rooms;
 
 class ShortCode
@@ -43,6 +44,16 @@ class ShortCode
         if (!is_user_logged_in()) {
             return '<h3 style="color:red">Please log in to Book your room!</h3>';
         }
+
+        global $current_user;
+
+        $myRooms = (new Bookings())->getMyBookings($current_user->ID, ['room_id']);
+
+        $myReservationIds = [];
+        foreach ($myRooms as $key=>$value) {
+            $myReservationIds[] = $value->room_id;
+        }
+        $myReservationIds = array_unique($myReservationIds);
 
         $availableRooms = (new Rooms())->getBookableRooms();
         ob_start();

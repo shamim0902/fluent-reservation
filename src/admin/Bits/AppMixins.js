@@ -103,7 +103,7 @@ export default class AppMixins {
     $adminAjax(options = {}) {
         options.action = "fluent_reservation_admin_ajax"
         const method = (options.method ?? 'get').toLowerCase();
-        return window.jQuery[method](window.fluentReservationVars.ajaxurl, options);
+        return window.jQuery[method](window.fluentReservationVars.ajax_url, options);
     }
 
     $post(url, options = {}) {

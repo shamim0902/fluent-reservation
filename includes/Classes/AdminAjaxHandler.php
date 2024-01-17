@@ -42,7 +42,9 @@ class AdminAjaxHandler
             'getRooms' => 'getRooms',
             'addRoom' => 'addRoom',
             'updateRoom' => 'updateRoom',
-            'bookNow' => 'bookNow'
+            'bookNow' => 'bookNow',
+            'seeBookingPersons' => 'seeBookingPersons',
+            'cancelBooking' => 'cancelBooking'
         ];
 
         if (isset($validRoutes[$route])) {
@@ -53,6 +55,46 @@ class AdminAjaxHandler
         do_action('fluent-reservation/admin_ajax_handler_catch', $route);
     }
 
+    public function cancelBooking()
+    {
+        dd('cancel');
+    }
+
+
+    public function seeBookingPersons()
+    {
+        $roomId = intval($_REQUEST['room_id']);
+        $room = (new Rooms())->find($roomId);
+
+        if (empty($room)) {
+            wp_send_json_error(
+                [
+                    'message' => "No room found!"
+                ],
+                423
+            );
+        }
+
+        $bookings = (new Bookings())->getBookingPersons($room->id);
+
+        if (!is_array($bookings)) {
+            wp_send_json_error(
+                [
+                    'message' => "No bookings received yet!"
+                ],
+                423
+            );
+        }
+
+        $names = [];
+        foreach ($bookings as $key => $value) {
+            $names[] = $value->name;
+        }
+
+        wp_send_json_success([
+                'bookings' => implode('<br/>', $names)
+            ], 200);
+    }
 
     public function bookNow()
     {
@@ -113,6 +155,7 @@ class AdminAjaxHandler
         $data = [
             'name' => $current_user->display_name,
             'email' => $current_user->user_email,
+            'user_id' => $current_user->ID,
             'room_id' => $roomId,
             'booked_seat' => 1
         ];
@@ -134,7 +177,6 @@ class AdminAjaxHandler
 
     public function addRoom()
     {
-
         if ((new Rooms())->addRoom($_REQUEST['data'])) {
             return wp_send_json_success(
                 [

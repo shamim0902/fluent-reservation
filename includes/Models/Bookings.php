@@ -17,6 +17,16 @@ class Bookings
         return fluentReservationDb()->table($this->table)->where('room_id', $roomId)->get();
     }
 
+    public function getBookingPersons($roomId)
+    {
+        return fluentReservationDb()->table($this->table)->where('room_id', $roomId)->get();
+    }
+
+    public function getMyBookings($userId, array $select)
+    {
+        return fluentReservationDb()->table($this->table)->select($select??'*')->where('user_id', $userId)->get();
+    }
+
     public function getBookingsByEmail($email): array
     {
         return fluentReservationDb()->table($this->table)->where('email', $email)->get();
