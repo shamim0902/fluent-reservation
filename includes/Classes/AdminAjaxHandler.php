@@ -44,7 +44,8 @@ class AdminAjaxHandler
             'updateRoom' => 'updateRoom',
             'bookNow' => 'bookNow',
             'seeBookingPersons' => 'seeBookingPersons',
-            'cancelBooking' => 'cancelBooking'
+            'cancelBooking' => 'cancelBooking',
+            'getBookings' => 'getBookings'
         ];
 
         if (isset($validRoutes[$route])) {
@@ -53,6 +54,16 @@ class AdminAjaxHandler
             return $this->{$validRoutes[$route]}($data);
         }
         do_action('fluent-reservation/admin_ajax_handler_catch', $route);
+    }
+
+    public function getBookings()
+    {
+        wp_send_json_success(
+            [
+                'bookings' => (new Bookings())->getBookings()
+            ]
+            , 200
+        );
     }
 
     public function cancelBooking()
@@ -112,9 +123,9 @@ class AdminAjaxHandler
         }
 
         wp_send_json_success([
-                'bookings' => implode('<br/>', $names),
-                'status' => true
-            ], 200);
+            'bookings' => implode('<br/>', $names),
+            'status' => true
+        ], 200);
     }
 
     public function bookNow()
