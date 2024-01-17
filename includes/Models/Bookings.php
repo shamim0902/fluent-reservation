@@ -9,6 +9,7 @@ class Bookings
 
     public function getBookings(): array
     {
+        global $wpdb;
         return fluentReservationDb()
             ->table($this->table)
             ->leftJoin(
@@ -20,7 +21,7 @@ class Bookings
             ->select(
                 "$this->table.*",
                 'fluent_reservation_rooms.room_no',
-                'fluent_reservation_rooms.id as room_id',
+                fluentReservationDb()->raw("{$wpdb->prefix}fluent_reservation_rooms.id AS main_room_id"),
                 'fluent_reservation_rooms.floor_no',
             )
             ->get();
