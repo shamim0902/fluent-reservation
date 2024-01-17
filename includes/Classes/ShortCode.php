@@ -9,14 +9,11 @@ class ShortCode
 {
     public function register()
     {
-        add_shortcode('fluent_reservation', function ($shortcodeAttributes) {
-            return $this->render($shortcodeAttributes);
-        });
 
 
-        add_action('init', function(){
+        add_action('init', function () {
             Vite::enqueueScript('fluent_reservation_frontend_script',
-            'Public/Public.js',
+                'Public/Public.js',
                 ['jquery'],
                 '1.0.1',
                 false
@@ -35,14 +32,18 @@ class ShortCode
                 ]
             );
         });
-
+        add_shortcode('fluent_reservation', function ($shortcodeAttributes) {
+            return $this->render($shortcodeAttributes);
+        });
 
     }
 
     public function render($shortcodeAttributes): string
     {
         if (!is_user_logged_in()) {
-            return '<h3 style="color:red">Please log in to Book your room!</h3>';
+            ob_start();
+            include FLUENTRESERVATION_DIR . 'includes/Views/log-in.php';
+            return ob_get_clean();
         }
 
         global $current_user;
@@ -50,7 +51,7 @@ class ShortCode
         $myRooms = (new Bookings())->getMyBookings($current_user->ID, ['room_id']);
 
         $myReservationIds = [];
-        foreach ($myRooms as $key=>$value) {
+        foreach ($myRooms as $key => $value) {
             $myReservationIds[] = $value->room_id;
         }
         $myReservationIds = array_unique($myReservationIds);
