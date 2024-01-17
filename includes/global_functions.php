@@ -17,7 +17,7 @@ function pluginlowercase_getAvatar($email, $size)
 }
 
 if (!function_exists('fluentReservationDb')) {
-    function fluentReservationDB(): \WpFluent\QueryBuilder\QueryBuilderHandler
+    function fluentReservationDB()
     {
         if (!function_exists('wpFluent')) {
             include FLUENTRESERVATION_DIR . 'includes/libs/wp-fluent/wp-fluent.php';
