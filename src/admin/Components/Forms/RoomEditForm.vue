@@ -10,7 +10,8 @@ const form = ref({
   room_no: '',
   floor_no: '',
   total_seat: 0,
-  info: ''
+  info: '',
+  status: 'open'
 })
 
 const requiredFields = ['room_no', 'floor_no', 'total_seat'];
@@ -43,7 +44,8 @@ const clearForm = () => {
     room_no: '',
     floor_no: '',
     total_seat: 0,
-    info: ''
+    info: '',
+    status: 'open'
   };
 }
 
@@ -76,6 +78,7 @@ defineExpose({clearForm, setValue})
           class="m-2"
           placeholder="Select"
           size="large"
+          style="width: 100%"
       >
         <el-option
             key="male"
@@ -87,6 +90,29 @@ defineExpose({clearForm, setValue})
             key="female"
             label="Female"
             value="female"
+        />
+      </el-select>
+      <span v-if="validationErrors['gender']"> {{ validationErrors['gender'] }}</span>
+    </el-form-item>
+
+    <el-form-item label="Status">
+      <el-select
+          v-model="form.status"
+          class="m-2"
+          placeholder="Select"
+          size="large"
+          style="width: 100%"
+      >
+        <el-option
+            key="locked"
+            label="Locked"
+            value="locked"
+        />
+
+        <el-option
+            key="open"
+            label="Open"
+            value="open"
         />
       </el-select>
       <span v-if="validationErrors['gender']"> {{ validationErrors['gender'] }}</span>

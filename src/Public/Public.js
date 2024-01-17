@@ -26,8 +26,8 @@ jQuery(function() {
         })
             .then(response => {
                 jQuery(this).html('Person in this room: ' + response.data.bookings);
-                jQuery(this).removeClass('text-blue-400');
-                jQuery(this).addClass('text-black-400 text-center break-words');
+                jQuery(this).removeClass('text-blue-500');
+                jQuery(this).addClass('text-blue-500 break-words');
             });
     });
 
