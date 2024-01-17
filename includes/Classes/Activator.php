@@ -44,6 +44,7 @@ class Activator
         $this->roomsTable();
 
         $this->bookingTable();
+
     }
 
     public function roomsTable()
