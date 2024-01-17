@@ -9,6 +9,7 @@
         <div class="border-2 bg-amber-100 p-4 rounded-2xl" id="<?php echo 'room_id_' . $room->id ?>">
             <h3>Room No: <?php echo esc_html($room->room_no) ?></h3>
             <div>
+                <p class="!m-0">Gender Preference: <?php echo esc_html($room->gender) ?></p>
                 <p class="!m-0">Floor No: <?php echo esc_html($room->floor_no) ?></p>
                 <p class="!m-0">Occupancy: <?php echo esc_html($room->total_seat) ?></p>
                 <p class="!m-0">Available: <?php echo esc_html($room->total_seat - $room->total_bookings) ?></p>
