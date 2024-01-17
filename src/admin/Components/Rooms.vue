@@ -4,6 +4,18 @@
       <el-table :data="rooms" style="width: 100%">
         <el-table-column label="Room Number" prop="room_no"/>
         <el-table-column label="Floor" prop="floor_no"/>
+
+        <el-table-column label="Gender" >
+          <template #default="scope">
+            <span style="text-transform: capitalize">{{scope.row.gender.length?scope.row.gender:"male"}}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="Status" >
+          <template #default="scope">
+            <span style="text-transform: capitalize">{{scope.row.status.length?scope.row.status:"Open"}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="Total Occupancy" prop="total_seat"/>
 
         <el-table-column label="Info">
