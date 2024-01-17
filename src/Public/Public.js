@@ -9,7 +9,9 @@ jQuery(function() {
             nonce: window.fluentReservationVars.nonce,
         })
             .then(response => {
-                console.log('hello', response)
+                if (response.data.status) {
+                    window.location.reload();
+                }
             });
     });
 
@@ -23,7 +25,7 @@ jQuery(function() {
             nonce: window.fluentReservationVars.nonce,
         })
             .then(response => {
-                jQuery(this).html('Room Booked by: ' + response.data.bookings);
+                jQuery(this).html('Person in this room: ' + response.data.bookings);
                 jQuery(this).removeClass('text-blue-400');
                 jQuery(this).addClass('text-black-400 text-center break-words');
             });
@@ -39,7 +41,9 @@ jQuery(function() {
             nonce: window.fluentReservationVars.nonce,
         })
             .then(response => {
-                window.location.reload();
+                if (response.data.status) {
+                    window.location.reload();
+                }
             });
     });
 

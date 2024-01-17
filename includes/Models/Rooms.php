@@ -34,7 +34,7 @@ class Rooms
             )
             ->groupBy('fluent_reservation_rooms.id')
             ->groupBy('fluent_reservation_rooms.total_seat')
-            ->having('total_bookings', '<', fluentReservationDb()->raw($wpdb->prefix . 'fluent_reservation_rooms.total_seat'))
+//            ->having('total_bookings', '<', fluentReservationDb()->raw($wpdb->prefix . 'fluent_reservation_rooms.total_seat'))
             ->get();
 
 

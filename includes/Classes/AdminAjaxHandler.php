@@ -57,7 +57,27 @@ class AdminAjaxHandler
 
     public function cancelBooking()
     {
-        dd('cancel');
+        $roomId = intval($_REQUEST['room_id']);
+        $room = (new Rooms())->find($roomId);
+
+        if (empty($room)) {
+            wp_send_json_error(
+                [
+                    'message' => "No room found!"
+                ],
+                423
+            );
+        };
+
+        (new Bookings())->cancelMyBooking($roomId);
+
+        wp_send_json_success(
+            [
+                'message' => 'Reservation canceled!',
+                'status' => true
+            ]
+        );
+
     }
 
 
@@ -88,11 +108,12 @@ class AdminAjaxHandler
 
         $names = [];
         foreach ($bookings as $key => $value) {
-            $names[] = $value->name;
+            $names[] = intval($key) + 1 . '.' . $value->name;
         }
 
         wp_send_json_success([
-                'bookings' => implode('<br/>', $names)
+                'bookings' => implode('<br/>', $names),
+                'status' => true
             ], 200);
     }
 
@@ -151,7 +172,6 @@ class AdminAjaxHandler
             );
         }
 
-
         $data = [
             'name' => $current_user->display_name,
             'email' => $current_user->user_email,
@@ -160,10 +180,12 @@ class AdminAjaxHandler
             'booked_seat' => 1
         ];
 
-
-        (new Bookings())->addBooking($data);
-
-
+        wp_send_json_success(
+            [
+                'status' => (new Bookings())->addBooking($data),
+                'message' => 'Reservation updates!'
+            ]
+        );
     }
 
     public function getRooms()

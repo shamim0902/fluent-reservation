@@ -12,6 +12,13 @@ class Bookings
         return fluentReservationDb()->table($this->table)->get();
     }
 
+
+    public function cancelMyBooking($roomId)
+    {
+        global $current_user;
+        return fluentReservationDb()->table($this->table)->where('room_id', $roomId)->where('user_id', $current_user->ID)->delete();
+    }
+
     public function getBookingsByRoom($roomId): array
     {
         return fluentReservationDb()->table($this->table)->where('room_id', $roomId)->get();

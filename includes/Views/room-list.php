@@ -8,19 +8,19 @@
         <div class="border-2 bg-amber-100 p-4 rounded-2xl" id="<?php echo 'room_id_' . $room->id ?>">
             <h3>Room No: <?php echo  esc_html($room->room_no)?></h3>
             <div>
-                <p>Floor No: <?php echo  esc_html($room->floor_no)?></p>
-                <p>Occupancy: <?php echo  esc_html($room->total_seat)?></p>
-                <p>Available: <?php echo  esc_html($room->total_seat - $room->total_bookings)?></p>
+                <p class="!m-0">Floor No: <?php echo  esc_html($room->floor_no)?></p>
+                <p class="!m-0">Occupancy: <?php echo  esc_html($room->total_seat)?></p>
+                <p class="!m-0">Available: <?php echo  esc_html($room->total_seat - $room->total_bookings)?></p>
             </div>
             <?php if ($room->status !== 'locked'): ?>
-                <p data-id="<?php echo  esc_html($room->id)?>" class="cursor-pointer text-blue-400 fluent_reservation_booking_persons">view booking persons</p>
+                <p data-id="<?php echo  esc_html($room->id)?>" class="cursor-pointer text-blue-400 fluent_reservation_booking_persons">People in this room</p>
             <?php endif; ?>
-            <?php if (!in_array( $room->id ,$myReservationIds)): ?>
+            <?php if (!in_array( $room->id ,$myReservationIds) && ($room->total_seat - $room->total_bookings) !== 0): ?>
                 <button data-id="<?php echo  esc_html($room->id)?>" class="<?php echo $room->status === 'locked' ? 'bg-red-200 hover:bg-red-300' : 'bg-green-500 fluent_reservation_button' ?>" <?php echo $room->status === 'locked' ? 'disabled' : '' ?>>
-                    <?php echo $room->status === 'locked' ? 'Booking Locked!' : 'Book My Seat' ?>
+                    <?php echo $room->status === 'locked' ? 'Room Locked!' : 'Book My Seat' ?>
                 </button>
-            <?php else: ?>
-                <button data-id="<?php echo  esc_html($room->id)?>" class=" hover:bg-red-300 fluent_reservation_cancel_button' ?>" <?php echo $room->status === 'locked' ? 'disabled' : '' ?>>
+            <?php elseif (in_array( $room->id ,$myReservationIds)): ?>
+                <button data-id="<?php echo  esc_html($room->id)?>" class=" hover:bg-red-300 fluent_reservation_cancel_button" <?php echo $room->status === 'locked' ? 'disabled' : '' ?>>
                    Cancel My Booking
                 </button>
             <?php endif; ?>
