@@ -58,6 +58,7 @@ class Activator
             floor_no VARCHAR(20) NOT NULL,
             total_seat int(10) NOT NULL,
             status VARCHAR(20) NOT NULL,
+            gender VARCHAR(20) NOT NULL,
             info LONGTEXT NOT NULL,
             created_at timestamp NULL DEFAULT NULL,
             updated_at timestamp NULL DEFAULT NULL,

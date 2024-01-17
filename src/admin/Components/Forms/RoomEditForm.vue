@@ -6,6 +6,7 @@ const emit = defineEmits(['onSuccess'])
 const $this = getCurrentInstance().ctx;
 const form = ref({
   id: '',
+  gender: '',
   room_no: '',
   floor_no: '',
   total_seat: 0,
@@ -17,7 +18,7 @@ const validationErrors = ref({});
 const updateRoom = () => {
   validationErrors.value = {};
   Object.keys(form.value).forEach((key) => {
-    const value = (form.value[key]??"").toString();
+    const value = (form.value[key] ?? "").toString();
     if (value.length < 1 && requiredFields.includes(key)) {
       validationErrors.value[key] = key + ' Is Required';
     }
@@ -38,6 +39,7 @@ const updateRoom = () => {
 const clearForm = () => {
   form.value = {
     id: '',
+    gender: '',
     room_no: '',
     floor_no: '',
     total_seat: 0,
@@ -46,7 +48,6 @@ const clearForm = () => {
 }
 
 const setValue = (value) => {
-  console.log(value)
   form.value = value;
 }
 
@@ -67,6 +68,28 @@ defineExpose({clearForm, setValue})
     <el-form-item label="Floor Number">
       <el-input v-model="form.floor_no" autocomplete="off"/>
       <span v-if="validationErrors['floor_no']"> {{ validationErrors['room_no'] }}</span>
+    </el-form-item>
+
+    <el-form-item label="Gender">
+      <el-select
+          v-model="form.gender"
+          class="m-2"
+          placeholder="Select"
+          size="large"
+      >
+        <el-option
+            key="male"
+            label="Male"
+            value="male"
+        />
+
+        <el-option
+            key="female"
+            label="Female"
+            value="female"
+        />
+      </el-select>
+      <span v-if="validationErrors['gender']"> {{ validationErrors['gender'] }}</span>
     </el-form-item>
 
     <el-form-item label="Total Seat">
