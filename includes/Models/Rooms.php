@@ -32,7 +32,7 @@ class Rooms
                 'fluent_reservation_rooms.*',
                 fluentReservationDb()->raw("COUNT({$wpdb->prefix}fluent_reservation_bookings.id) AS total_bookings")
             )
-            ->where('status','!=','locked')
+//            ->where('status','!=','locked')
             ->groupBy('fluent_reservation_rooms.id')
             ->groupBy('fluent_reservation_rooms.total_seat')
 //            ->having('total_bookings', '<', fluentReservationDb()->raw($wpdb->prefix . 'fluent_reservation_rooms.total_seat'))
