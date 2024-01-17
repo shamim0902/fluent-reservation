@@ -12,6 +12,11 @@ class Rooms
         return fluentReservationDb()->table($this->table)->get();
     }
 
+    public function find($id): ?\stdClass
+    {
+        return fluentReservationDb()->table($this->table)->find($id);
+    }
+
     public function getBookableRooms(): array
     {
         global $wpdb;

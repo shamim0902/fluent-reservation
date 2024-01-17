@@ -2,6 +2,7 @@
 
 namespace fluentReservation\Classes;
 
+use fluentReservation\Models\Bookings;
 use fluentReservation\Models\Rooms;
 
 class AdminAjaxHandler
@@ -18,6 +19,7 @@ class AdminAjaxHandler
             $this,
             'handleEndPoint'
         ]);
+
     }
 
     public function handleEndPoint()
@@ -39,7 +41,8 @@ class AdminAjaxHandler
         $validRoutes = [
             'getRooms' => 'getRooms',
             'addRoom' => 'addRoom',
-            'updateRoom' => 'updateRoom'
+            'updateRoom' => 'updateRoom',
+            'bookNow' => 'bookNow'
         ];
 
         if (isset($validRoutes[$route])) {
@@ -48,6 +51,76 @@ class AdminAjaxHandler
             return $this->{$validRoutes[$route]}($data);
         }
         do_action('fluent-reservation/admin_ajax_handler_catch', $route);
+    }
+
+
+    public function bookNow()
+    {
+        global $current_user;
+
+        if (!$current_user->ID) {
+            wp_send_json_error(
+                [
+                    'message' => "Please login in to book a reservation!"
+                ],
+                423
+            );
+        }
+
+        if (!empty((new Bookings())->getBookingsByEmail($current_user->user_email))) {
+            wp_send_json_error(
+                [
+                    'message' => "You have already reserved a room!!"
+                ],
+                423
+            );
+        }
+
+
+        if (!isset($_REQUEST['room_id'])) {
+            wp_send_json_error(
+                [
+                    'message' => "Please reload the page to get valid rooms info!"
+                ],
+                423
+            );
+        }
+        $roomId = intval($_REQUEST['room_id']);
+        $room = (new Rooms())->find($roomId);
+
+        if (empty($room)) {
+            wp_send_json_error(
+                [
+                    'message' => "No room found!"
+                ],
+                423
+            );
+        }
+
+        $previousBookings = (new Bookings())->getBookingsByRoom($roomId);
+        $previousBookingCount = count($previousBookings);
+
+        if ($previousBookingCount >= $room->total_seat) {
+            wp_send_json_error(
+                [
+                    'message' => "No available seat"
+                ],
+                423
+            );
+        }
+
+
+        $data = [
+            'name' => $current_user->display_name,
+            'email' => $current_user->user_email,
+            'room_id' => $roomId,
+            'booked_seat' => 1
+        ];
+
+
+        (new Bookings())->addBooking($data);
+
+
     }
 
     public function getRooms()

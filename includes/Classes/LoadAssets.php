@@ -13,7 +13,7 @@ class LoadAssets
             [
                 'nonce' => wp_create_nonce('fluent_reservation_nonce'),
                 'assets_url' => Vite::staticPath(),
-                'ajaxurl' => admin_url('admin-ajax.php'),
+                'ajax_url' => admin_url('admin-ajax.php'),
                 'preview_url' => site_url('?book_reservation'),
             ]
         );

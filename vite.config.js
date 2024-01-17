@@ -39,6 +39,7 @@ export default defineConfig({
       input: [
         'src/admin/start.js',
         'src/style.css',
+        'src/Public/Public.js'
         // 'src/assets'
       ],
       output: {
