@@ -56,7 +56,16 @@
         </el-dialog>
       </div>
 
-      
+      <br/>
+      <div style="width:500px;">
+        <h3>Redirect after booking success:</h3>
+        <el-input v-model="confirmation_url">
+          <template #append>
+            <el-button @click="updateConfirmation"> Update</el-button>
+          </template>
+        </el-input>
+
+      </div>
     </div>
     <div>
 
@@ -78,10 +87,32 @@ export default {
       search: '',
       showAddModal: false,
       showEditModal: false,
-      currentEditableRoom: {}
+      currentEditableRoom: {},
+      confirmation_url: ''
     }
   },
   methods: {
+    getConfirmation(){
+      this.$adminAjax({
+        method: 'get',
+        'confirmation_url': this.confirmation_url,
+        route: 'getConfirmation',
+        nonce: window.fluentReservationVars.nonce
+      })
+          .then(res => {
+            this.confirmation_url = res.data.confirmation_url;
+          })
+    },
+    updateConfirmation() {
+      this.$adminAjax({
+        method: 'post',
+        'confirmation_url': this.confirmation_url,
+        route: 'updateConfirmation',
+        nonce: window.fluentReservationVars.nonce
+      })
+          .then(res => {
+          })
+    },
     onRoomAdded(data) {
       this.rooms = data.rooms;
       this.hideAddModal();
@@ -145,6 +176,7 @@ export default {
   },
   mounted() {
     this.getRooms();
+    this.getConfirmation();
   }
 };
 </script>

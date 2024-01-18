@@ -26,6 +26,7 @@ class ShortCode
                 'fluent_reservation_frontend_script',
                 'fluentReservationVars',
                 [
+                    'confirmation_url' =>  get_option('fluent_reservation_confirmation_url', ''),
                     'nonce' => wp_create_nonce('fluent_reservation_nonce'),
                     'assets_url' => Vite::staticPath(),
                     'ajax_url' => admin_url('admin-ajax.php'),

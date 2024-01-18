@@ -49,7 +49,9 @@ class AdminAjaxHandler
             'getAdminBookableRoom' => 'getAdminBookableRoom',
             'addAdminBooking' => 'addAdminBooking',
             'deleteBookings' => 'deleteBookings',
-            'deleteRooms' => 'deleteRooms'
+            'deleteRooms' => 'deleteRooms',
+            'updateConfirmation' => 'updateConfirmation',
+            'getConfirmation' => 'getConfirmation'
         ];
 
         if (isset($validRoutes[$route])) {
@@ -78,6 +80,36 @@ class AdminAjaxHandler
                 'status' => true
         ], 200);
 
+    }
+
+    public function getConfirmation()
+    {
+        wp_send_json_success(
+            [
+                'confirmation_url' =>  get_option('fluent_reservation_confirmation_url'),
+                'message' => 'fetched'
+            ]
+        );
+    }
+
+    public function updateConfirmation()
+    {
+        if (!isset($_REQUEST['confirmation_url'])) {
+            wp_send_json_error(
+                [
+                    'message' => 'Please provide a valid url!'
+                ],
+                423
+            );
+        }
+
+        update_option('fluent_reservation_confirmation_url', sanitize_url($_REQUEST['confirmation_url']));
+
+        wp_send_json_success(
+            [
+                'message' => 'Update success!'
+            ], 200
+        );
     }
 
     public function deleteRooms()
@@ -284,11 +316,10 @@ class AdminAjaxHandler
         ];
 
         $res = (new Bookings())->addBooking($data);
-
         if ($res) {
             wp_send_json_success(
                 [   'status' => true,
-                    'room_id' => $roomId,
+                    'room_id' => (new Bookings())->getBookings($res)[0]->room_no,
                     'message' => 'Reservation updates!'
                 ], 200
             );

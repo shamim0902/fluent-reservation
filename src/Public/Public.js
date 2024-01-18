@@ -9,8 +9,8 @@ jQuery(function() {
             nonce: window.fluentReservationVars.nonce,
         })
             .then(response => {
-                if (response.data.status) {
-                    window.location.href = 'https://debug.test/reserve-seat?&room_id=' + response.data.room_id ;
+                if (response.data.status && window.fluentReservationVars.confirmation_url) {
+                    window.location.href = window.fluentReservationVars.confirmation_url + '?room_id=' + response.data.room_id ;
                 }
             });
     });
