@@ -12,6 +12,11 @@ class Rooms
         return fluentReservationDb()->table($this->table)->get();
     }
 
+    public function deleteRooms($roomId)
+    {
+        return fluentReservationDb()->table($this->table)->where('id', $roomId)->delete();
+    }
+
     public function getAdminBookableRooms(): array
     {
         global $wpdb;

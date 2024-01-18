@@ -1,6 +1,12 @@
 <template>
   <div>
     <div class="fluent_reservation_admin_header">
+      <div style="margin-top: 20px">
+        <el-button style="float:right; margin-right: 12px;" @click="openAddModal">Add Room</el-button>
+        <el-dialog v-model="showAddModal" title="Add Room">
+          <RoomAddForm ref="room_form" @on-success="onRoomAdded"/>
+        </el-dialog>
+      </div>
       <el-table :data="rooms" style="width: 100%">
         <el-table-column label="Room Number" prop="room_no"/>
         <el-table-column label="Floor" prop="floor_no"/>
@@ -33,26 +39,24 @@
 
         <el-table-column label="Action">
           <template #default="scope">
-            <el-button type="warning" @click="()=>{
+            <el-button size="small" type="warning" @click="()=>{
               openEditModal(scope.row);
             }" plain>Edit
+            </el-button>
+            <el-button  size="small" @click="confirmDelete(scope.row.id)">
+              Remove
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-
-      <div style="margin-top: 20px">
-        <el-button @click="openAddModal">Add Room</el-button>
-        <el-dialog v-model="showAddModal" title="Add Room">
-          <RoomAddForm ref="room_form" @on-success="onRoomAdded"/>
-        </el-dialog>
-      </div>
 
       <div>
         <el-dialog v-model="showEditModal" title="Edit Room">
           <RoomEditForm ref="room_edit_form" @on-success="onRoomUpdated"/>
         </el-dialog>
       </div>
+
+      
     </div>
     <div>
 
@@ -87,6 +91,24 @@ export default {
       this.hideEditModal();
     },
 
+    confirmDelete(id) {
+      if (confirm("Delete this Room? Also delete all bookigs of this room.") == true) {
+        this.deleteReservation(id);
+      } else {
+      }
+    },
+    deleteReservation(id) {
+
+      this.$adminAjax({
+        method: 'post',
+        'room_id': id,
+        route: 'deleteRooms',
+        nonce: window.fluentReservationVars.nonce
+      })
+          .then(res => {
+              this.getRooms();
+          })
+    },
     getRooms() {
       this.$adminAjax({
         route: 'getRooms',

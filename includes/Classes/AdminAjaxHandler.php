@@ -48,7 +48,8 @@ class AdminAjaxHandler
             'getBookings' => 'getBookings',
             'getAdminBookableRoom' => 'getAdminBookableRoom',
             'addAdminBooking' => 'addAdminBooking',
-            'deleteBookings' => 'deleteBookings'
+            'deleteBookings' => 'deleteBookings',
+            'deleteRooms' => 'deleteRooms'
         ];
 
         if (isset($validRoutes[$route])) {
@@ -75,6 +76,26 @@ class AdminAjaxHandler
         wp_send_json_success([
                 'message' => 'Booking deleted!',
                 'status' => true
+        ], 200);
+
+    }
+
+    public function deleteRooms()
+    {
+        if (empty($_REQUEST['room_id'])) {
+            wp_send_json_error(
+                [
+                    'message' => 'No Room selected!'
+                ],
+                423
+            );
+        }
+
+        (new Rooms())->deleteRooms(intval($_REQUEST['room_id']));
+
+        wp_send_json_success([
+            'message' => 'Rooms deleted!',
+            'status' => true
         ], 200);
 
     }
@@ -262,12 +283,17 @@ class AdminAjaxHandler
             'booked_seat' => 1
         ];
 
-        wp_send_json_success(
-            [
-                'status' => (new Bookings())->addBooking($data),
-                'message' => 'Reservation updates!'
-            ]
-        );
+        $res = (new Bookings())->addBooking($data);
+
+        if ($res) {
+            wp_send_json_success(
+                [   'status' => true,
+                    'room_id' => $roomId,
+                    'message' => 'Reservation updates!'
+                ], 200
+            );
+        }
+
     }
 
     public function getRooms()

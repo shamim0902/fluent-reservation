@@ -10,7 +10,7 @@ jQuery(function() {
         })
             .then(response => {
                 if (response.data.status) {
-                    window.location.reload();
+                    window.location.href = 'https://debug.test/reserve-seat?&room_id=' + response.data.room_id ;
                 }
             });
     });
