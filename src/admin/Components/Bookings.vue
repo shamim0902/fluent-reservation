@@ -9,16 +9,25 @@
       </el-table>
     </div>
   </div>
+
+  <div style="margin-top: 20px">
+    <el-button @click="openAddBookingModal">Add Booking</el-button>
+    <el-dialog v-model="showAddBookingModal" title="Add Room">
+      <BookingAddForm ref="room_form" @on-success="onBookingAdded"/>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup>
 import {getCurrentInstance, onMounted, ref} from "vue";
+import BookingAddForm from "./Forms/BookingAddForm.vue";
 
 const $this = getCurrentInstance().ctx;
 const bookings = ref([])
 onMounted(() => {
   getBookings();
 });
+
 
 const getBookings = () => {
   $this.$adminAjax({
@@ -28,5 +37,15 @@ const getBookings = () => {
       .then(res => {
         bookings.value = res.data.bookings;
       })
+}
+
+const showAddBookingModal = ref(false)
+const openAddBookingModal = () => {
+  showAddBookingModal.value = true;
+}
+
+const onBookingAdded = () => {
+  showAddBookingModal.value = false;
+  getBookings();
 }
 </script>

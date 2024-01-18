@@ -45,7 +45,9 @@ class AdminAjaxHandler
             'bookNow' => 'bookNow',
             'seeBookingPersons' => 'seeBookingPersons',
             'cancelBooking' => 'cancelBooking',
-            'getBookings' => 'getBookings'
+            'getBookings' => 'getBookings',
+            'getAdminBookableRoom' => 'getAdminBookableRoom',
+            'addAdminBooking' => 'addAdminBooking'
         ];
 
         if (isset($validRoutes[$route])) {
@@ -56,6 +58,55 @@ class AdminAjaxHandler
         do_action('fluent-reservation/admin_ajax_handler_catch', $route);
     }
 
+
+    public function addAdminBooking()
+    {
+        $booking = (new Bookings());
+        $data = $_REQUEST['data'];
+
+        if(empty($data['room_id'])) {
+            wp_send_json_error(
+              ['message' => 'Please select room!'],
+              423
+            );
+        }
+
+        $roomId = intval($data['room_id']);
+        $room = (new Rooms())->find($roomId);
+
+        if (empty($room)) {
+            wp_send_json_error(
+                [
+                    'message' => "No room found!"
+                ],
+                423
+            );
+        }
+
+        $previousBookings = (new Bookings())->getBookingsByRoom($roomId);
+        $previousBookingCount = count($previousBookings);
+
+        if ($previousBookingCount >= $room->total_seat) {
+            wp_send_json_error(
+                [
+                    'message' => "No available seat"
+                ],
+                423
+            );
+        }
+
+        global $current_user;
+
+
+        $data['user_id'] = $current_user->ID;
+
+        wp_send_json_success(
+            [
+                'bookings' => $booking->addBooking($data)
+            ]
+            , 200
+        );
+    }
     public function getBookings()
     {
         wp_send_json_success(
@@ -237,5 +288,14 @@ class AdminAjaxHandler
                 'message' => "Can't add room"
             ]);
         }
+    }
+
+    public function getAdminBookableRoom()
+    {
+        wp_send_json_success(
+            [
+                'rooms' => (new Rooms())->getAdminBookableRooms()
+            ]
+            , 200);
     }
 }
