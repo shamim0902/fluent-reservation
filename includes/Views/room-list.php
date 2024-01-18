@@ -4,18 +4,20 @@
  * @var array $myReservationIds
  */
 ?>
-<div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6 pt-5">
+<div class="grid grid-cols-1 md:grid-cols-2  gap-6 pt-5">
     <?php foreach ($availableRooms as $room): ?>
-        <div class="border border-solid border-gray-200 bg-white p-4 rounded-lg"
+        <div class="room_box border border-solid border-gray-200 bg-white p-4 rounded-lg  <?php echo esc_html($room->info) ?>"
              id="<?php echo 'room_id_' . $room->id ?>">
 
             <div class="text-[15px]">
-                <p class="!mb-1 text-gray-900">Room No: <span
+                <p class="!mb-1 text-gray-900"> Name: <span
                             class="text-gray-500"><?php echo esc_html($room->room_no) ?></span></p>
                 <p class="!mb-1 text-gray-900">Gender Preference: <span
-                            class="text-gray-500"><?php echo esc_html($room->gender) ?></span></p>
-                <p class="!mb-1 text-gray-900">Floor No: <span
-                            class="text-gray-500"><?php echo esc_html($room->floor_no) ?></span></p>
+                            class="text-gray-500" style="font-weight:bold;color:#dc2626"><?php echo esc_html($room->gender) ?></span></p>
+
+                <!--<p class="!mb-1 text-gray-900">Info: <span-->
+                <!--            class="text-gray-500"><?php echo esc_html($room->info) ?></span></p>            -->
+
                 <p class="!mb-1 text-gray-900">Occupancy: <span
                             class="text-gray-500"><?php echo esc_html($room->total_seat) ?></span></p>
                 <p class="!mb-1 text-gray-900">Available: <span
