@@ -47,7 +47,8 @@ class AdminAjaxHandler
             'cancelBooking' => 'cancelBooking',
             'getBookings' => 'getBookings',
             'getAdminBookableRoom' => 'getAdminBookableRoom',
-            'addAdminBooking' => 'addAdminBooking'
+            'addAdminBooking' => 'addAdminBooking',
+            'deleteBookings' => 'deleteBookings'
         ];
 
         if (isset($validRoutes[$route])) {
@@ -58,6 +59,25 @@ class AdminAjaxHandler
         do_action('fluent-reservation/admin_ajax_handler_catch', $route);
     }
 
+    public function deleteBookings()
+    {
+        if (empty($_REQUEST['booking_id'])) {
+            wp_send_json_error(
+                [
+                    'message' => 'No Booking selected!'
+                ],
+                423
+            );
+        }
+
+        (new Bookings())->deleteBookings(intval($_REQUEST['booking_id']));
+
+        wp_send_json_success([
+                'message' => 'Booking deleted!',
+                'status' => true
+        ], 200);
+
+    }
 
     public function addAdminBooking()
     {

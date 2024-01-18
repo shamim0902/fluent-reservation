@@ -6,6 +6,11 @@
         <el-table-column label="Email" prop="email"/>
         <el-table-column label="Room No" prop="room_no"/>
         <el-table-column label="Floor No" prop="floor_no"/>
+        <el-table-column>
+          <template #default="scope">
+            <el-button type="danger" size="small" @click="confirmDelete(scope.row.id)">delete</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -42,6 +47,27 @@ const getBookings = () => {
 const showAddBookingModal = ref(false)
 const openAddBookingModal = () => {
   showAddBookingModal.value = true;
+}
+
+const confirmDelete = id => {
+  if (confirm("Delete this reservation?") == true) {
+    deleteReservation(id);
+  } else {
+  }
+}
+
+const deleteReservation = id => {
+  $this.$adminAjax({
+    method:'post',
+    route: 'deleteBookings',
+    booking_id: id,
+    nonce: window.fluentReservationVars.nonce
+  })
+      .then(res => {
+        if (res.data.status) {
+          getBookings();
+        }
+      })
 }
 
 const onBookingAdded = () => {

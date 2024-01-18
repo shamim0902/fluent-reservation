@@ -39,6 +39,11 @@ class Bookings
         return fluentReservationDb()->table($this->table)->where('room_id', $roomId)->get();
     }
 
+    public function deleteBookings($booking_id)
+    {
+        return fluentReservationDb()->table($this->table)->where('id', $booking_id)->delete();
+    }
+
     public function getBookingPersons($roomId)
     {
         return fluentReservationDb()->table($this->table)->where('room_id', $roomId)->get();
