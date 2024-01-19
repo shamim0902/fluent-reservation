@@ -9,10 +9,29 @@ jQuery(function() {
             nonce: window.fluentReservationVars.nonce,
         })
             .then(response => {
-                if (response.data.status && window.fluentReservationVars.confirmation_url) {
-                    window.location.href = window.fluentReservationVars.confirmation_url + '?room_id=' + response.data.room_id ;
-                }
-            });
+                Toastify({
+                    text: "Reservation done!",
+                    duration: 2000
+                }).showToast();
+
+                setTimeout(() => {
+                    if (response.data.status && window.fluentReservationVars.confirmation_url) {
+                        window.location.href = window.fluentReservationVars.confirmation_url + '?room_id=' + response.data.room_id ;
+                    } else {
+                        window.location.reload();
+                    }
+                }, 1500)
+
+            }). catch(error => {
+                Toastify({
+                    text: (error.responseJSON.data.message),
+                    duration: 3000,
+                    style: {
+                        background: "red",
+                    },
+                }).showToast();
+            })
+        ;
     });
 
     jQuery('.fluent_reservation_booking_persons').click(function() {

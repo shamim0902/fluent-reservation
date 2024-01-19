@@ -9,9 +9,7 @@ class ShortCode
 {
     public function register()
     {
-
-
-        add_action('init', function () {
+        add_shortcode('fluent_reservation', function ($shortcodeAttributes) {
             Vite::enqueueScript('fluent_reservation_frontend_script',
                 'Public/Public.js',
                 ['jquery'],
@@ -22,7 +20,10 @@ class ShortCode
                 'style.css',
             );
 
-            wp_localize_script(
+            wp_enqueue_script('toastify-js-scripts', 'https://cdn.jsdelivr.net/npm/toastify-js', ['jquery']);
+            wp_enqueue_style('toastify-js-styles' ,'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css');
+
+                wp_localize_script(
                 'fluent_reservation_frontend_script',
                 'fluentReservationVars',
                 [
@@ -32,8 +33,6 @@ class ShortCode
                     'ajax_url' => admin_url('admin-ajax.php'),
                 ]
             );
-        });
-        add_shortcode('fluent_reservation', function ($shortcodeAttributes) {
             return $this->render($shortcodeAttributes);
         });
 
