@@ -127,7 +127,8 @@ onMounted(() => {
                 <div class="w-20 h-20 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
                 <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                   </svg>
                 </div>
               </div>
@@ -186,12 +187,38 @@ onMounted(() => {
                       <span class="text-slate-800 font-semibold">{{ room.available }}</span>
                     </div>
                   </div>
-                </div>
 
-                <div v-if="room.isBooked" class="mb-4">
-                  <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium hover:underline">
-                    See people in this room
-                  </a>
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="text-slate-600 font-medium">Booked:</span>
+                    <div class="flex items-center space-x-1">
+                      <span class="text-slate-800 font-semibold">{{ room.total_seat - room.available }}</span>
+                      <div v-if="room.persons.length > 0">
+
+                        <el-popover placement="right" :width="400" trigger="click">
+                          <template #reference>
+
+                            <p class="!mb-0 cursor-pointer">
+                              <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+                                   fill="currentColor">
+                                <path
+                                    d="M140,176a4,4,0,0,1-4,4,12,12,0,0,1-12-12V128a4,4,0,0,0-4-4,4,4,0,0,1,0-8,12,12,0,0,1,12,12v40a4,4,0,0,0,4,4A4,4,0,0,1,140,176ZM124,92a8,8,0,1,0-8-8A8,8,0,0,0,124,92Zm104,36A100,100,0,1,1,128,28,100.11,100.11,0,0,1,228,128Zm-8,0a92,92,0,1,0-92,92A92.1,92.1,0,0,0,220,128Z"></path>
+                              </svg>
+                            </p>
+                          </template>
+                          <div class="">
+                            <p class="!mb-0 cursor-pointer px-2 py-2" v-for="person in room.persons" style="border-bottom: 1px solid #eaecf0">
+                              {{ person.name }} {{ person.isYourself ? "(By You)" : "" }}
+                              <br>
+                              {{person.email}}
+                            </p>
+                          </div>
+
+                        </el-popover>
+
+
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
 

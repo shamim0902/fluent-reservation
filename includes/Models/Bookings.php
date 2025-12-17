@@ -63,4 +63,8 @@ class Bookings
     {
         return fluentReservationDb()->table($this->table)->insert($data);
     }
+
+    public function getBookingsOfRooms($roomIds){
+        return fluentReservationDb()->table($this->table)->whereIn('room_id', $roomIds)->get();
+    }
 }

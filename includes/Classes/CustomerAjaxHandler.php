@@ -65,8 +65,8 @@ class CustomerAjaxHandler
     {
         if (!is_user_logged_in()) {
             return [
-                'message'=>'You are not logged in',
-                'code' => 403,
+                'message' => 'You are not logged in',
+                'code'    => 403,
             ];
         }
         $availableRooms = (new Rooms())->getBookableRooms();
@@ -82,14 +82,28 @@ class CustomerAjaxHandler
         }
         $myReservationIds = array_unique($myReservationIds);
 
-        $availableRooms = array_map(function ($room) use ($myReservationIds) {
+        $availableRoomIds = array_column($availableRooms, 'id');
+        $bookings = (new Bookings())->getBookingsOfRooms($availableRoomIds);
+        $bookingsByRoom = [];
+        foreach ($bookings as $booking) {
+            if ($booking->user_id == $current_user->ID) {
+                //$booking->name = 'You';
+                $booking->isYourself = true;
+            }
+            $bookingsByRoom[$booking->room_id][] = $booking;
+        }
+
+
+        $availableRooms = array_map(function ($room) use ($myReservationIds, $bookingsByRoom) {
             $room->isBooked = $room->total_seat <= $room->total_bookings;
             $room->isBookedByMe = in_array($room->id, $myReservationIds);
             $room->available = $room->total_seat - $room->total_bookings;
+
+
+            $room->persons = isset($bookingsByRoom[$room->id]) ? $bookingsByRoom[$room->id] : [];
             return $room;
         }, $availableRooms);
 
-//        ds($availableRooms);
 
         return [
             'data' => [

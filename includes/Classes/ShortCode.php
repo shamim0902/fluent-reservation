@@ -24,6 +24,7 @@ class ShortCode
             return ob_get_clean();
         }
 
+
         Vite::enqueueScript('fluent_reservation_frontend_script_cart',
             'frontend/start.js',
             '1.0.1',
