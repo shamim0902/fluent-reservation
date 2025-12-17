@@ -24,6 +24,12 @@ class ShortCode
             return ob_get_clean();
         }
 
+        Vite::enqueueScript('fluent_reservation_frontend_script_cart',
+            'frontend/start.js',
+            '1.0.1',
+            false
+        );
+
         Vite::enqueueScript('fluent_reservation_frontend_script',
             'Public/Public.js',
             ['jquery'],
@@ -45,9 +51,8 @@ class ShortCode
                 'nonce'            => wp_create_nonce('fluent_reservation_nonce'),
                 'assets_url'       => Vite::staticPath(),
                 'ajax_url'         => admin_url('admin-ajax.php'),
-            ]
+            ],
         );
-
 
 
         global $current_user;

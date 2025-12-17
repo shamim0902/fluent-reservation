@@ -43,6 +43,8 @@ class fluentReservation {
     public function registerAdminAjax()
     {
         (new \fluentReservation\Classes\AdminAjaxHandler())->register();
+        (new \fluentReservation\Classes\CustomerAjaxHandler())->register();
+
     }
 
     public function renderMenu()

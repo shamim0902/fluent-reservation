@@ -43,7 +43,7 @@ class Vite
     {
         if (in_array($handle, (static::$instance)->moduleScripts)) {
             if (static::isDevMode()) {
-                throw new Exception('This handel Has been used');
+                //throw new Exception('This handel Has been used');
             }
             return;
         }

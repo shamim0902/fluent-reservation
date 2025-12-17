@@ -4,6 +4,10 @@
  * @var array $myReservationIds
  */
 ?>
+
+<div id="room-list-app">
+
+</div>
 <div class="grid grid-cols-1 md:grid-cols-2  gap-6 pt-5">
     <?php foreach ($availableRooms as $room): ?>
         <div class="room_box border border-solid border-gray-200 bg-white p-4 rounded-lg  <?php echo esc_html($room->info) ?>"
