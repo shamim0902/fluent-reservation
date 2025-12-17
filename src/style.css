@@ -1,2 +1,6 @@
+@import '../node_modules/element-plus/theme-chalk/base.css';
+@import '../node_modules/element-plus/theme-chalk/el-icon.css';
+@import '../node_modules/element-plus/theme-chalk/el-notification.css';
 @tailwind utilities;
 @tailwind base;
+

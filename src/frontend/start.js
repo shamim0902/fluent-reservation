@@ -20,7 +20,7 @@ const router = createRouter(
 const app = createApp(App);
 app
     .use(router)
-
+    //.use(ElementPlus)
     .component('app', App);
-console.log('Start');
+
 app.mount('#room-list-app');
