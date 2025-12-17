@@ -194,7 +194,7 @@ onMounted(() => {
                       <span class="text-slate-800 font-semibold">{{ room.total_seat - room.available }}</span>
                       <div v-if="room.persons.length > 0">
 
-                        <el-popover placement="right" :width="400" trigger="click">
+                        <el-popover placement="right" :width="400" trigger="hover">
                           <template #reference>
 
                             <p class="!mb-0 cursor-pointer">
@@ -206,15 +206,14 @@ onMounted(() => {
                             </p>
                           </template>
                           <div class="">
-                            <p class="!mb-0 cursor-pointer px-2 py-2" v-for="person in room.persons" style="border-bottom: 1px solid #eaecf0">
+                            <p class="!mb-0 cursor-pointer px-2 py-2" v-for="person in room.persons"
+                               style="border-bottom: 1px solid #eaecf0">
                               {{ person.name }} {{ person.isYourself ? "(By You)" : "" }}
                               <br>
-                              {{person.email}}
+                              {{ person.email }}
                             </p>
                           </div>
-
                         </el-popover>
-
 
                       </div>
                     </div>
@@ -231,9 +230,25 @@ onMounted(() => {
                   </button>
                 </template>
 
-                <template v-else-if="!hasReservation">
+                <template v-else>
+
+
+                  <div v-if="hasReservation"
+                       class="border-2 border-dashed border-slate-300 rounded-xl py-3 px-4 text-center bg-slate-50">
+
+                    <div class="text-sm text-slate-500 font-medium !mb-0 flex items-center justify-center rounded-xl cursor-not-allowed">
+                      <svg class="w-4 h-4 text-slate-400 mr-2" fill="none" stroke="currentColor"
+                           viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                      </svg>
+                      Already booked another room
+                    </div>
+                  </div>
+
+
                   <button
-                      v-if="!room.isBooked"
+                      v-if="!room.isBooked && !hasReservation"
                       @click="bookRoom(room.id)"
                       :disabled="room.available === 0"
                       :class="room.available === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'"
