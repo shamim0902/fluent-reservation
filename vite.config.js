@@ -40,7 +40,8 @@ export default defineConfig({
         'src/admin/start.js',
         'src/style.css',
         'src/Public/Public.js',
-        'src/frontend/start.js'
+        'src/frontend/start.js',
+        'src/scss/admin/app.scss'
         // 'src/assets'
       ],
       output: {

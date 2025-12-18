@@ -7,9 +7,20 @@ class Rooms
 
     protected $table = 'fluent_reservation_rooms';
 
-    public function getRooms(): array
+    public function getRooms($requestParams = []): array
     {
-        return fluentReservationDb()->table($this->table)->get();
+        $query = fluentReservationDb()->table($this->table);
+
+        if (isset($requestParams['search']) && !empty($requestParams['search'])) {
+            $query->where('room_no', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('floor_no', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('gender', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('total_seat', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('status', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('info', 'LIKE', '%' . $requestParams['search'] . '%');
+        }
+
+        return $query->get();
     }
 
     public function deleteRooms($roomId)

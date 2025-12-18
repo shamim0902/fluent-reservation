@@ -68,7 +68,6 @@ defineExpose({clearForm})
     <el-form-item label="Gender">
       <el-select
           v-model="form.gender"
-          class="m-2"
           placeholder="Select"
           size="large"
           style="width: 100%"
@@ -91,7 +90,6 @@ defineExpose({clearForm})
     <el-form-item label="Status">
       <el-select
           v-model="form.status"
-          class="m-2"
           placeholder="Select"
           size="large"
           style="width: 100%"
@@ -125,8 +123,7 @@ defineExpose({clearForm})
       />
     </el-form-item>
 
-    <el-button @click="addRoom">Add Room
-    </el-button>
+    <el-button @click="addRoom" type="primary">Add Room</el-button>
   </el-form>
 
 </template>

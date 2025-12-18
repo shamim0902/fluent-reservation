@@ -182,9 +182,14 @@ class AdminAjaxHandler
     }
     public function getBookings()
     {
+
+        $data = [
+            'search' => isset($_REQUEST['search']) ? $_REQUEST['search'] : ''
+        ];
+
         wp_send_json_success(
             [
-                'bookings' => (new Bookings())->getBookings()
+                'bookings' => (new Bookings())->getBookings($data)
             ]
             , 200
         );
@@ -329,9 +334,12 @@ class AdminAjaxHandler
 
     public function getRooms()
     {
+        $data = [
+            'search' => isset($_REQUEST['search']) ? $_REQUEST['search'] : ''
+        ];
         wp_send_json_success(
             [
-                'rooms' => (new Rooms())->getRooms()
+                'rooms' => (new Rooms())->getRooms($data)
             ]
             , 200);
     }

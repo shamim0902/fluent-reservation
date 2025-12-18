@@ -1,6 +1,37 @@
 <template>
   <div>
-    <div class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
+    <div class="fluent_reservation_page_heading_wrap">
+      <h1 class="fluent_reservation_page_heading--title">Booking</h1>
+      <div class="fluent_reservation_page_heading--actions">
+        <el-button @click="openAddBookingModal" type="primary">Add Booking</el-button>
+      </div>
+    </div>
+
+
+    <div class="fluentreservation_table_wrap">
+      <div class="fluentreservation_table_header">
+        <div class="fluentreservation_table_header_inner">
+          <div class="fluentreservation_table_header_inner_left">
+            <el-input v-model="search" placeholder="Search" size="large" clearable @keyup.enter="getBookings" @clear="getBookings" />
+          </div>
+        </div>
+      </div>
+
+      <div class="fluentreservation_table_body">
+        <el-table :data="bookings" style="width: 100%">
+          <el-table-column label="Booked By" prop="name"/>
+          <el-table-column label="Email" prop="email"/>
+          <el-table-column label="Room No" prop="room_no"/>
+          <el-table-column label="Floor No" prop="floor_no" />
+          <el-table-column>
+            <template #default="scope">
+              <el-button size="small" @click="confirmDelete(scope.row.id)">Delete</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+    <div v-if="false" class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
       <el-table :data="bookings" style="width: 100%">
         <el-table-column label="Booked By" prop="name"/>
         <el-table-column label="Email" prop="email"/>
@@ -13,10 +44,8 @@
         </el-table-column>
       </el-table>
     </div>
-  </div>
 
-  <div style="margin-top: 20px">
-    <el-button @click="openAddBookingModal">Add Booking</el-button>
+
     <el-dialog v-model="showAddBookingModal" title="Add Room">
       <BookingAddForm ref="room_form" @on-success="onBookingAdded"/>
     </el-dialog>
@@ -28,7 +57,8 @@ import {getCurrentInstance, onMounted, ref} from "vue";
 import BookingAddForm from "./Forms/BookingAddForm.vue";
 
 const $this = getCurrentInstance().ctx;
-const bookings = ref([])
+const bookings = ref([]);
+const search = ref('');
 onMounted(() => {
   getBookings();
 });
@@ -37,6 +67,7 @@ onMounted(() => {
 const getBookings = () => {
   $this.$adminAjax({
     route: 'getBookings',
+    'search': search.value,
     nonce: window.fluentReservationVars.nonce
   })
       .then(res => {

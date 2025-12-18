@@ -7,10 +7,11 @@ class Bookings
 
     protected $table = 'fluent_reservation_bookings';
 
-    public function getBookings(): array
+    public function getBookings($requestParams = []): array
     {
         global $wpdb;
-        return fluentReservationDb()
+
+        $query = fluentReservationDb()
             ->table($this->table)
             ->leftJoin(
                 'fluent_reservation_rooms',
@@ -23,8 +24,17 @@ class Bookings
                 'fluent_reservation_rooms.room_no',
                 fluentReservationDb()->raw("{$wpdb->prefix}fluent_reservation_rooms.id AS main_room_id"),
                 'fluent_reservation_rooms.floor_no',
-            )
-            ->get();
+            );
+
+        if (isset($requestParams['search']) && !empty($requestParams['search'])) {
+            $query->where('fluent_reservation_bookings.name', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('fluent_reservation_bookings.email', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('fluent_reservation_bookings.room_id', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('fluent_reservation_bookings.info', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('fluent_reservation_bookings.user_id', 'LIKE', '%' . $requestParams['search'] . '%')
+                ->orWhere('fluent_reservation_bookings.booked_seat', 'LIKE', '%' . $requestParams['search'] . '%');
+        }
+        return $query->get();
     }
 
 

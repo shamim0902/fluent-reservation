@@ -103,15 +103,33 @@ class fluentReservation {
         wp_localize_script('fluentreservation-script-boot', 'fluentreservationAdmin', $fluentreservation);
 
         echo '<div class="fluentreservation-admin-page" id="fluentreservation_app">
-            <div class="main-menu text-white-200 bg-wheat-600 p-4">
-                <router-link to="/">
-                    Rooms
-                </router-link> |
-                <router-link to="/bookings" >
-                    Bookings
-                </router-link>
+            <div class="fluentreservation-main-menu-wrapper">
+               <div class="fluentreservation-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" width="200" height="50">
+                      <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
+                          <stop offset="100%" style="stop-color:#00c6ff;stop-opacity:1" />
+                        </linearGradient>
+                      </defs>
+                      <g transform="translate(10, 10)">
+                        <path d="M10,5 L5,5 L5,25 L25,25 L25,5 L20,5 M10,0 L10,5 M20,0 L20,5" stroke="url(#grad1)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10,15 L15,20 L25,10" stroke="#28a745" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        
+                        <text x="35" y="23" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#343a40">Fluent</text>
+                        <text x="95" y="23" font-family="Arial, sans-serif" font-size="18" fill="#6c757d">Reservation</text>
+                      </g>
+                    </svg>
+               </div>
+                <div class="fluentreservation-main-menu">
+                    <router-link to="/">
+                        Rooms
+                    </router-link>
+                    <router-link to="/bookings" >
+                        Bookings
+                    </router-link>
+                </div>
             </div>
-            <hr/>
             <router-view></router-view>
         </div>';
     }

@@ -1,3 +1,163 @@
+@tailwind utilities;
+@tailwind base;
+
 a:focus {
     box-shadow: none;
+}
+#fluentreservation_app {
+    padding-right: 20px;
+    padding-top: 84px;
+    box-sizing: border-box;
+    *,*:before,*:after {
+        box-sizing: border-box;
+    }
+}
+
+.el-popper {
+    .el-select-dropdown__list {
+        .el-select-dropdown__item {
+
+        }
+    }
+}
+
+.fluentreservation-main-menu-wrapper {
+    position: fixed;
+    top: 32px;
+    right: 0px;
+    z-index: 2000;
+    width: calc(100% - 160px);
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 20px rgba(28, 39, 50, 0.08);
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    .fluentreservation-logo {
+        svg {
+            display: block;
+            //width: 150px;
+        }
+    }
+    .fluentreservation-main-menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 14px;
+        padding-bottom: 14px;
+
+        a {
+            text-decoration: none;
+            @apply py-2.5 leading-none px-3 mb-0 tracking-wide font-medium cursor-pointer text-center text-sm box-border flex justify-center items-center rounded border border-solid border-transparent text-system-dark mr-1 last:mr-0 transition-none dark:text-gray-400 hover:bg-dark-25 hover:text-dark-500 dark:hover:bg-dark-600 dark:hover:text-white focus:shadow-none;
+            &.router-link-exact-active {
+                @apply bg-dark-25 text-dark-500 ;
+            }
+        }
+    }
+}
+
+.toplevel_page_fluent-reservation {
+    background: #f3f5fa;
+
+
+    input[type=email]:focus,
+    input[type=password]:focus,
+    input[type=reset]:focus,
+    input[type=search]:focus,
+    input[type=tel]:focus,
+    input[type=text]:focus,
+    input[type=url]:focus,
+    select:focus,
+    textarea:focus {
+        @apply bg-transparent outline-none shadow-none #{!important};
+    }
+    .el-input--small .el-input__inner{
+        @apply h-[22px];
+    }
+
+
+    .el-input {
+        .el-input__wrapper {
+            height: auto;
+            min-height: 36px;
+            border-radius: 8px;
+            padding: 7px 12px;
+            font-size: 14px;
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+        }
+        &__inner {
+            @apply py-1 px-4 rounded border border-solid border-gray-outline shadow-none;
+            &:focus,
+            &.is-focus{
+                @apply shadow-none border-primary-500 #{!important};
+            }
+            .icon{
+                @apply inline-flex items-center;
+            }
+            input {
+                @apply outline-none shadow-none #{!important};
+            }
+        }
+    }
+
+    .el-textarea{
+        &__inner{
+            @apply h-[100px] shadow-none border border-solid border-gray-outline rounded py-2.5 px-4 focus:shadow-none hover:shadow-none;
+            &:focus,
+            &.is-focus{
+                @apply border-primary-500;
+            }
+        }
+    }
+
+    .el-form-item {
+        font-size: 14px;
+        margin-bottom: 18px;
+        .el-form-item__label {
+            height: auto;
+            line-height: 22px;
+            margin-bottom: 8px;
+            text-align: left;
+            vertical-align: middle;
+            display: inline-block !important;
+            font-weight: 500 !important;
+            color: rgb(47, 52, 72) !important;
+            font-size: 14px;
+            padding: 0 12px 0 0;
+        }
+    }
+
+    // Overlay
+    .el-overlay {
+        .el-dialog {
+            border-radius: 8px;
+            padding: 0px;
+            max-width: 560px;
+            width: 100%;
+        }
+        .el-dialog__body {
+            padding: 20px;
+        }
+        .el-dialog__header {
+            margin-right: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgb(244, 245, 247);
+            padding: 16px 20px;
+            .el-dialog__title {
+                font-size: 16px;
+                font-weight: 500;
+                color: rgb(47, 52, 72);
+            }
+        }
+    }
+}
+
+
+.fluent_reservation_page_heading_wrap {
+
 }

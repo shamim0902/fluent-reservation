@@ -6,6 +6,7 @@ class LoadAssets
 {
     public function admin()
     {
+        Vite::enqueueStyle('fluent-reservation-style', 'scss/admin/app.scss', array(), FLUENTRESERVATION_VERSION);
         Vite::enqueueScript('fluent-reservation-script-boot', 'admin/start.js', array('jquery'), FLUENTRESERVATION_VERSION, true);
         wp_localize_script(
             'fluent-reservation-script-boot',

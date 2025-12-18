@@ -83,7 +83,6 @@ const getBookableRooms = () => {
     <el-form-item label="Room">
       <el-select
           v-model="form.room_id"
-          class="m-2"
           placeholder="Select"
           size="large"
           style="width: 100%"
@@ -102,7 +101,7 @@ const getBookableRooms = () => {
     </el-form-item>
 
 
-    <el-button @click="addBooking">Add Booking</el-button>
+    <el-button @click="addBooking" type="primary">Add Booking</el-button>
   </el-form>
 
 </template>
