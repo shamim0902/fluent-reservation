@@ -6,8 +6,35 @@ import copy from 'rollup-plugin-copy';
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import path from "path";
+import fs from "fs";
 
 // https://vitejs.dev/config/
+
+let viteConfig;
+const moveManifestPlugin = {
+  name: "move-manifest",
+  configResolved(resolvedConfig) {
+    viteConfig = resolvedConfig;
+  },
+  writeBundle() {
+    const outDir = viteConfig.build.outDir;
+    const manifestSrc = path.join(outDir, ".vite", "manifest.json");
+    const manifestDest = path.resolve(__dirname, 'assets/manifest.json');
+    const viteDir = path.join(outDir, ".vite");
+
+    if (fs.existsSync(manifestSrc)) {
+      // Move the manifest file
+      fs.renameSync(manifestSrc, manifestDest);
+
+      // Remove empty .vite directory if exists
+      if (fs.existsSync(viteDir) && fs.readdirSync(viteDir).length === 0) {
+        fs.rmSync(viteDir, {recursive: true});
+      }
+
+    }
+  },
+};
 export default defineConfig({
   plugins: 
   [
@@ -20,6 +47,7 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    moveManifestPlugin,
     copy({
       targets: [
         { src: 'src/assets/*', dest: 'assets/' },
