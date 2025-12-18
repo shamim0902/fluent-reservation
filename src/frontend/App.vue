@@ -287,7 +287,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
+<style lang="scss">
   .fluentreservation-frontend-app {
     button {
       &:disabled {
