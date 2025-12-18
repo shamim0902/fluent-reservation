@@ -171,15 +171,58 @@ onMounted(() => {
                 <div class="space-y-3 mb-6">
                   <div class="flex items-center justify-between text-sm">
                     <span class="text-slate-600 font-medium">Gender Preference:</span>
-                    <span class="text-blue-600 font-semibold uppercase" v-if="room.gender ==='male'">{{
-                        room.gender
-                      }}</span>
-                    <span class="text-pink-500 font-semibold uppercase" v-else>{{ room.gender }}</span>
+
+
+                    <div class="flex items-center space-x-2">
+                      <template v-if="room.gender ==='male'">
+
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="currentColor">
+                          <path
+                              d="m7.5.5c1.65685425 0 3 1.34314575 3 3v2c0 1.65685425-1.34314575 3-3 3s-3-1.34314575-3-3v-2c0-1.65685425 1.34314575-3 3-3zm7 14v-.7281753c0-3.1864098-3.6862915-5.2718247-7-5.2718247s-7 2.0854149-7 5.2718247v.7281753c0 .5522847.44771525 1 1 1h12c.5522847 0 1-.4477153 1-1z"
+                              fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                              transform="translate(3 2)"></path>
+                        </svg>
+                        <span class="text-blue-600 font-semibold uppercase">{{
+                            room.gender
+                          }}</span>
+
+                      </template>
+
+                      <template v-else>
+
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="currentColor">
+                          <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linejoin="round"
+                             transform="translate(3 2)">
+                            <path
+                                d="m8.5 2.5 2 2v1c0 1.65685425-1.34314575 3-3 3-1.59768088 0-2.90366088-1.24891996-2.99490731-2.82372721l-.00509269-1.17627279z"
+                                stroke-linecap="round"></path>
+                            <path
+                                d="m2.5 10v-4.5c0-2.76142375 2.23857625-5 5-5 2.7614237 0 5 2.23857625 5 5v4.5"></path>
+                            <path
+                                d="m14.5 14.5v-.7281753c0-3.1864098-3.6862915-5.2718247-7-5.2718247s-7 2.0854149-7 5.2718247v.7281753c0 .5522847.44771525 1 1 1h12c.5522847 0 1-.4477153 1-1z"
+                                stroke-linecap="round"></path>
+                          </g>
+                        </svg>
+                        <span class="text-pink-500 font-semibold uppercase">{{ room.gender }}</span>
+
+                      </template>
+                    </div>
+
+
                   </div>
 
                   <div class="flex items-center justify-between text-sm">
-                    <span class="text-slate-600 font-medium">Occupancy:</span>
+                    <span class="text-slate-600 font-medium">Bed:</span>
                     <div class="flex items-center space-x-1">
+                      <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                           stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M7 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                        <path d="M22 17v-3h-20"></path>
+                        <path d="M2 8v9"></path>
+                        <path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z"></path>
+                      </svg>
                       <span class="text-slate-800 font-semibold">{{ room.total_seat }}</span>
                     </div>
                   </div>
@@ -187,6 +230,44 @@ onMounted(() => {
                   <div class="flex items-center justify-between text-sm">
                     <span class="text-slate-600 font-medium">Available:</span>
                     <div class="flex items-center space-x-1">
+                      <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
+                           xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 36 36"
+                           preserveAspectRatio="xMidYMid meet" fill="currentColor"><title>
+                        calendar-outline-badged</title>
+                        <path class="clr-i-outline--badged clr-i-outline-path-1--badged"
+                              d="M32,13.22V30H4V8H7V6H3.75A1.78,1.78,0,0,0,2,7.81V30.19A1.78,1.78,0,0,0,3.75,32h28.5A1.78,1.78,0,0,0,34,30.19V12.34A7.45,7.45,0,0,1,32,13.22Z"></path>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-2--badged" x="8" y="14" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-3--badged" x="14" y="14" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-4--badged" x="20" y="14" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-5--badged" x="26" y="14" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-6--badged" x="8" y="19" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-7--badged" x="14" y="19" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-8--badged" x="20" y="19" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-9--badged" x="26" y="19" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-10--badged" x="8" y="24" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-11--badged" x="14" y="24" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-12--badged" x="20" y="24" width="2"
+                              height="2"></rect>
+                        <rect class="clr-i-outline--badged clr-i-outline-path-13--badged" x="26" y="24" width="2"
+                              height="2"></rect>
+                        <path class="clr-i-outline--badged clr-i-outline-path-14--badged"
+                              d="M10,10a1,1,0,0,0,1-1V3A1,1,0,0,0,9,3V9A1,1,0,0,0,10,10Z"></path>
+                        <path class="clr-i-outline--badged clr-i-outline-path-15--badged"
+                              d="M22.5,6H13V8h9.78A7.49,7.49,0,0,1,22.5,6Z"></path>
+                        <circle class="clr-i-outline--badged clr-i-outline-path-16--badged clr-i-badge" cx="30" cy="6"
+                                r="5"></circle>
+                        <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
+                      </svg>
                       <span class="text-slate-800 font-semibold">{{ room.available }}</span>
                     </div>
                   </div>
@@ -232,10 +313,13 @@ onMounted(() => {
                   >
                     <span v-if="cancelingBooking" class="loader-icon block">
                       <svg class="block" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" opacity="0.2" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2.5"></circle>
+                        <circle cx="12" cy="12" r="10" opacity="0.2" fill="none" stroke="currentColor"
+                                stroke-miterlimit="10" stroke-width="2.5"></circle>
 
-                        <path d="m12,2c5.52,0,10,4.48,10,10" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.5">
-                          <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="0.5s" from="0 12 12" to="360 12 12" repeatCount="indefinite"></animateTransform>
+                        <path d="m12,2c5.52,0,10,4.48,10,10" fill="none" stroke="currentColor" stroke-linecap="round"
+                              stroke-miterlimit="10" stroke-width="2.5">
+                          <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="0.5s"
+                                            from="0 12 12" to="360 12 12" repeatCount="indefinite"></animateTransform>
                         </path>
                       </svg>
                     </span>
@@ -268,10 +352,13 @@ onMounted(() => {
                   >
                     <span v-if="bookingRoom && bookingRoomId === room.id" class="loader-icon block">
                       <svg class="block" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" opacity="0.2" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2.5"></circle>
+                        <circle cx="12" cy="12" r="10" opacity="0.2" fill="none" stroke="currentColor"
+                                stroke-miterlimit="10" stroke-width="2.5"></circle>
 
-                        <path d="m12,2c5.52,0,10,4.48,10,10" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.5">
-                          <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="0.5s" from="0 12 12" to="360 12 12" repeatCount="indefinite"></animateTransform>
+                        <path d="m12,2c5.52,0,10,4.48,10,10" fill="none" stroke="currentColor" stroke-linecap="round"
+                              stroke-miterlimit="10" stroke-width="2.5">
+                          <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="0.5s"
+                                            from="0 12 12" to="360 12 12" repeatCount="indefinite"></animateTransform>
                         </path>
                       </svg>
                     </span>
@@ -288,13 +375,13 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
-  .fluentreservation-frontend-app {
-    button {
-      &:disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
+.fluentreservation-frontend-app {
+  button {
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
   }
+}
 </style>
 
