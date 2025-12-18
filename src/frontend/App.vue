@@ -231,8 +231,6 @@ onMounted(() => {
                 </template>
 
                 <template v-else>
-
-
                   <div v-if="hasReservation"
                        class="border-2 border-dashed border-slate-300 rounded-xl py-3 px-4 text-center bg-slate-50">
 
@@ -257,8 +255,6 @@ onMounted(() => {
                     Book My Seat
                   </button>
                 </template>
-
-
               </div>
             </div>
           </div>
