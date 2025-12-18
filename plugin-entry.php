@@ -15,7 +15,7 @@ define('FLUENTRESERVATION_DIR', plugin_dir_path(__FILE__));
 define('FLUENTRESERVATION_VERSION', '1.0.5');
 
 // This will automatically update, when you run dev or production
-define('FLUENTRESERVATION_DEVELOPMENT', 'yes');
+define('FLUENTRESERVATION_PRODUCTION', 'yes');
 
 class fluentReservation {
     public function boot()

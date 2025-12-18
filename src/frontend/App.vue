@@ -36,7 +36,10 @@ const getRooms = () => {
         manageResponse(data, false);
       })
       .always(function () {
-        loading.value = false;
+        setTimeout(() => {
+          loading.value = false;
+        }, 1000);
+
       });
 }
 
@@ -244,7 +247,8 @@ onMounted(() => {
                   <div v-if="hasReservation"
                        class="border-2 border-dashed border-slate-300 rounded-xl py-3 px-4 text-center bg-slate-50">
 
-                    <div class="text-sm text-slate-500 font-medium !mb-0 flex items-center justify-center rounded-xl cursor-not-allowed">
+                    <div
+                        class="text-sm text-slate-500 font-medium !mb-0 flex items-center justify-center rounded-xl cursor-not-allowed">
                       <svg class="w-4 h-4 text-slate-400 mr-2" fill="none" stroke="currentColor"
                            viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
