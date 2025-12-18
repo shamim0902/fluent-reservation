@@ -113,7 +113,7 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="fct-customer-app">
+  <div class="fct-customer-app fluentreservation-frontend-app">
 
 
     <div>
@@ -156,7 +156,7 @@ onMounted(() => {
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    <h2 class="text-2xl font-bold text-slate-800 m-0">Room {{ room.room_no }}</h2>
+                    <h2 class="text-lg font-bold text-slate-800 m-0">Room {{ room.room_no }}</h2>
                   </div>
                   <span
                       :class="room.isBooked
@@ -286,4 +286,15 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style>
+  .fluentreservation-frontend-app {
+    button {
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+</style>
 
