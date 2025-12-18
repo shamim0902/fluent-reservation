@@ -4,6 +4,7 @@
 
 /*===== button =====*/
 .el-button{
+  padding: 7px 16px;
   @apply text-system-dark no-underline rounded min-h-9 h-auto px-4 text-sm font-medium border border-solid border-gray-outline inline-flex outline-none items-center gap-2 focus-visible:outline-none focus:shadow-none focus-visible:shadow-none focus:bg-primary-25 focus:border-gray-outline focus:text-system-dark hover:bg-primary-25 hover:shadow-none dark:bg-primary-500 dark:text-gray-200 dark:border-primary-500 #{!important};
   .icon svg{
     @apply w-[15px] h-[15px];

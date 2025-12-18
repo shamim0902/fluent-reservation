@@ -125,8 +125,11 @@ class fluentReservation {
                     <router-link to="/">
                         Rooms
                     </router-link>
-                    <router-link to="/bookings" >
+                    <router-link to="/bookings">
                         Bookings
+                    </router-link>
+                    <router-link to="/settings">
+                        Settings
                     </router-link>
                 </div>
             </div>

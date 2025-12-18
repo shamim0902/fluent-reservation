@@ -84,9 +84,10 @@ class AdminAjaxHandler
 
     public function getConfirmation()
     {
+        $confirmationUrl = get_option('fluent_reservation_confirmation_url');
         wp_send_json_success(
             [
-                'confirmation_url' =>  get_option('fluent_reservation_confirmation_url'),
+                'confirmation_url' =>  $confirmationUrl ? $confirmationUrl : '',
                 'message' => 'fetched'
             ]
         );

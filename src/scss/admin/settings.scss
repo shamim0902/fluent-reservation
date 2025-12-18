@@ -1,0 +1,83 @@
+
+@tailwind utilities;
+@tailwind base;
+
+.fluentreservation-settings {
+  &-wrapper {
+    @apply flex;
+  }
+  &-sidebar-panel {
+    @apply w-[280px] flex-none bg-white p-4 rounded;
+    ul {
+      li {
+        a {
+          line-height: 20px;
+          @apply relative flex cursor-pointer items-center gap-2.5 rounded py-2 px-3 text-sm font-medium text-system-mid;
+          &.router-link-exact-active,
+          &:hover {
+            @apply bg-primary-25;
+          }
+        }
+        .fct-settings-menu-child-wrap {
+          padding-left: 26px;
+          @apply relative;
+          &:before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            height: calc(100% - 16px);
+            width: 2px;
+            transform: translateY(-50%);
+            @apply bg-gray-100 rounded;
+          }
+          li {
+            a {
+              &:before {
+                content: "";
+                position: absolute;
+                top: 8px;
+                left: -8px;
+                height: calc(100% - 16px);
+                width: 0;
+                @apply bg-primary-500 rounded;
+              }
+              &.router-link-exact-active,
+              &:hover {
+                @apply bg-transparent text-primary-500;
+                &:before {
+                  width: 2px;
+                }
+              }
+
+            }
+          }
+        }
+      }
+    }
+  }
+  &-main-panel {
+    @apply flex-1 px-12.5;
+  }
+  &-body {
+    &-inner {
+      @apply bg-white rounded;
+    }
+    &--header {
+      @apply border-solid border-[1px] border-gray-100 border-t-0 border-l-0 border-r-0 py-4 px-5 flex items-center justify-between gap-3 flex-wrap;
+      &-title {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0;
+        font-size: 16px;
+        font-weight: 500;
+        @apply text-primary-500;
+      }
+    }
+    &--content {
+      padding: 20px;
+    }
+  }
+}
