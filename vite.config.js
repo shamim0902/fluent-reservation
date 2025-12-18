@@ -106,7 +106,12 @@ export default defineConfig({
       port: 2222,
       host: 'localhost',
       protocol: 'ws',
-    }
+    },
+    cors: {
+      origin: "*",
+      methods: ["GET"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    },
   }
 })
 
