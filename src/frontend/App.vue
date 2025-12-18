@@ -153,7 +153,7 @@ onMounted(() => {
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    <h2 class="text-2xl font-bold text-slate-800">Room {{ room.room_no }}</h2>
+                    <h2 class="text-2xl font-bold text-slate-800 m-0">Room {{ room.room_no }}</h2>
                   </div>
                   <span
                       :class="room.isBooked
@@ -224,8 +224,18 @@ onMounted(() => {
                 <template v-if="room.isBookedByMe">
                   <button
                       @click="cancelBooking(room.id)"
-                      class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200"
+                      class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
+                      :disabled="cancelingBooking"
                   >
+                    <span v-if="cancelingBooking" class="loader-icon block">
+                      <svg class="block" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" opacity="0.2" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2.5"></circle>
+
+                        <path d="m12,2c5.52,0,10,4.48,10,10" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.5">
+                          <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="0.5s" from="0 12 12" to="360 12 12" repeatCount="indefinite"></animateTransform>
+                        </path>
+                      </svg>
+                    </span>
                     Cancel My Booking
                   </button>
                 </template>
@@ -248,10 +258,19 @@ onMounted(() => {
                   <button
                       v-if="!room.isBooked && !hasReservation"
                       @click="bookRoom(room.id)"
-                      :disabled="room.available === 0"
+                      :disabled="room.available === 0 || bookingRoom"
                       :class="room.available === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'"
-                      class="w-full text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200"
+                      class="w-full text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200  flex items-center justify-center gap-2"
                   >
+                    <span v-if="bookingRoom && bookingRoomId === room.id" class="loader-icon block">
+                      <svg class="block" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" opacity="0.2" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2.5"></circle>
+
+                        <path d="m12,2c5.52,0,10,4.48,10,10" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.5">
+                          <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="0.5s" from="0 12 12" to="360 12 12" repeatCount="indefinite"></animateTransform>
+                        </path>
+                      </svg>
+                    </span>
                     Book My Seat
                   </button>
                 </template>
