@@ -38,7 +38,7 @@ class ShortCode
             false
         );
         Vite::enqueueStyle('fluent_reservation_frontend_style',
-            'style.css',
+            'scss/admin/app.scss',
         );
 
         wp_enqueue_script('toastify-js-scripts', 'https://cdn.jsdelivr.net/npm/toastify-js', ['jquery']);

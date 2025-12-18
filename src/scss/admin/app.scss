@@ -1,6 +1,14 @@
+
+
+@import '../../../node_modules/element-plus/theme-chalk/base.css';
+@import '../../../node_modules/element-plus/theme-chalk/el-icon.css';
+@import '../../../node_modules/element-plus/theme-chalk/el-notification.css';
+@import '../../../node_modules/element-plus/theme-chalk/el-popover.css';
+@import '../../../node_modules/element-plus/theme-chalk/el-dialog.css';
+
 @import './element-plus/button.scss';
 @import './element-plus/table.scss';
 @import './heading.scss';
 
-
-@import './global_css.scss';
+@tailwind utilities;
+@tailwind base;
