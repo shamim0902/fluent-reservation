@@ -191,7 +191,6 @@ onMounted(() => {
                   <div class="flex items-center justify-between text-sm">
                     <span class="text-slate-600 font-medium">Booked:</span>
                     <div class="flex items-center space-x-1">
-                      <span class="text-slate-800 font-semibold">{{ room.total_seat - room.available }}</span>
                       <div v-if="room.persons.length > 0">
 
                         <el-popover placement="right" :width="400" trigger="hover">
@@ -216,6 +215,7 @@ onMounted(() => {
                         </el-popover>
 
                       </div>
+                      <span class="text-slate-800 font-semibold">{{ room.total_seat - room.available }}</span>
                     </div>
                   </div>
                 </div>
