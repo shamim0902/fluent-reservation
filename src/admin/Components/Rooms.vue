@@ -115,7 +115,7 @@
       <br/>
     </div>
 
-    <div style="width:500px;">
+    <div style="width:500px;" v-if="false">
       <h3>Redirect after booking success:</h3>
       <el-input v-model="confirmation_url">
         <template #append>
