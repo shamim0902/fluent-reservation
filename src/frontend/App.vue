@@ -156,7 +156,7 @@ onMounted(() => {
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    <h2 class="text-lg font-bold text-slate-800 m-0">Room {{ room.room_no }}</h2>
+                    <h2 class="text-lg font-bold text-slate-800 !m-0">Room {{ room.room_no }}</h2>
                   </div>
                   <span
                       :class="room.isBooked
@@ -224,6 +224,19 @@ onMounted(() => {
                         <path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z"></path>
                       </svg>
                       <span class="text-slate-800 font-semibold">{{ room.total_seat }}</span>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="text-slate-600 font-medium">Floor:</span>
+                    <div class="flex items-center space-x-1">
+                      <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M22 6h-5v5h-5v5h-5v5h-5"></path>
+                        <path d="M6 10v-7"></path>
+                        <path d="M3 6l3 -3l3 3"></path>
+                      </svg>
+                      <span class="text-slate-800 font-semibold">{{ room.floor_no || 1 }}</span>
                     </div>
                   </div>
 
