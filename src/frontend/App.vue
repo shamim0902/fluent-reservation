@@ -31,7 +31,7 @@ const hasError = ref(false);
 
 const activeFilter = ref('all');
 const searchQuery = ref('');
-const availableOnly = ref(false);
+const availableOnly = ref(true);
 const filteredRooms = computed(() => {
   const list = rooms.value || [];
   let genderFiltered = list;
@@ -44,8 +44,15 @@ const filteredRooms = computed(() => {
   let searchFiltered = genderFiltered;
   if (q) {
     searchFiltered = genderFiltered.filter(r => {
-      const name = (r.name || r.room_no || '').toString().toLowerCase();
-      return name.includes(q);
+      const roomLabel = (r.name || r.room_no || '').toString().toLowerCase();
+      const persons = Array.isArray(r.persons) ? r.persons : [];
+      const matchRoom = roomLabel.includes(q);
+      const matchGuest = persons.some(p => {
+        const n = (p.name || '').toString().toLowerCase();
+        const e = (p.email || '').toString().toLowerCase();
+        return n.includes(q) || e.includes(q);
+      });
+      return matchRoom || matchGuest;
     });
   }
   if (availableOnly.value) {
@@ -182,11 +189,11 @@ onMounted(() => {
                   <span class="text-sm font-semibold text-slate-700">Available Only</span>
                 </label>
               </div>
-              <div class="ml-auto w-full sm:w-64" v-if="false">
+              <div class="ml-auto w-full sm:w-64">
                 <input
                     v-model="searchQuery"
                     type="text"
-                    placeholder="Search room number..."
+                    placeholder="Search room number, guest name or email..."
                     class="w-full px-4 py-2 border border-slate-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 />
               </div>
