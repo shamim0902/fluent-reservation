@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, computed} from 'vue';
 import {ElNotification} from 'element-plus'
 
 const $get = (route = {}) => {
@@ -28,6 +28,26 @@ const loading = ref(true);
 const hasReservation = ref(false);
 const reservations = ref([]);
 const hasError = ref(false);
+
+const activeFilter = ref('all');
+const searchQuery = ref('');
+const filteredRooms = computed(() => {
+  const list = rooms.value || [];
+  let genderFiltered = list;
+  if (activeFilter.value === 'male') {
+    genderFiltered = list.filter(r => r.gender === 'male' || r.gender === 'both');
+  } else if (activeFilter.value === 'female') {
+    genderFiltered = list.filter(r => r.gender === 'female' || r.gender === 'both');
+  }
+  const q = (searchQuery.value || '').toString().trim().toLowerCase();
+  if (!q) {
+    return genderFiltered;
+  }
+  return genderFiltered.filter(r => {
+    const name = (r.name || r.room_no || '').toString().toLowerCase();
+    return name.includes(q);
+  });
+});
 
 
 const getRooms = () => {
@@ -124,6 +144,42 @@ onMounted(() => {
             <p class="text-slate-600">Select and manage your room reservations</p>
           </div>
 
+          <div class="mb-6">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-2">
+                <button
+                    @click="activeFilter = 'all'"
+                    :class="activeFilter === 'all' ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border border-blue-600'"
+                    class="px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200"
+                >
+                  All
+                </button>
+                <button
+                    @click="activeFilter = 'male'"
+                    :class="activeFilter === 'male' ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border border-blue-600'"
+                    class="px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200"
+                >
+                  Male
+                </button>
+                <button
+                    @click="activeFilter = 'female'"
+                    :class="activeFilter === 'female' ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border border-blue-600'"
+                    class="px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200"
+                >
+                  Female
+                </button>
+              </div>
+              <div class="ml-auto w-full sm:w-64">
+                <input
+                    v-model="searchQuery"
+                    type="text"
+                    placeholder="Search room number..."
+                    class="w-full px-4 py-2 border border-slate-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                />
+              </div>
+            </div>
+          </div>
+
           <div v-if="loading" class="p-4 bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
             <div class="text-center">
               <div class="relative inline-flex">
@@ -141,7 +197,7 @@ onMounted(() => {
 
           <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
-                v-for="room in rooms"
+                v-for="room in filteredRooms"
                 :key="room.id"
                 class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden"
             >
@@ -443,4 +499,3 @@ onMounted(() => {
   }
 }
 </style>
-
