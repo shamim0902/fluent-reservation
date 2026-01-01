@@ -15,13 +15,19 @@ const form = ref({
 })
 
 const requiredFields = ['room_no', 'floor_no', 'total_seat'];
+const requiredFieldsTitle = {
+  'room_no': 'Room Number',
+  'floor_no': 'Floor Number',
+  'total_seat': 'Total Seat',
+  'gender': 'Gender',
+};
 const validationErrors = ref({});
 const updateRoom = () => {
   validationErrors.value = {};
   Object.keys(form.value).forEach((key) => {
     const value = (form.value[key] ?? "").toString();
     if (value.length < 1 && requiredFields.includes(key)) {
-      validationErrors.value[key] = key + ' Is Required';
+      validationErrors.value[key] = requiredFieldsTitle[key] + ' Is Required';
     }
   })
   if (!Object.keys(validationErrors.value).length) {
@@ -90,7 +96,15 @@ defineExpose({clearForm, setValue})
             label="Female"
             value="female"
         />
+
+        <el-option
+            key="both"
+            label="Both"
+            value="both"
+        />
       </el-select>
+
+
       <span v-if="validationErrors['gender']"> {{ validationErrors['gender'] }}</span>
     </el-form-item>
 

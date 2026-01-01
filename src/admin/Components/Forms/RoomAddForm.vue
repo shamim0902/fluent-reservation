@@ -89,6 +89,12 @@ defineExpose({clearForm})
             label="Female"
             value="female"
         />
+
+        <el-option
+            key="both"
+            label="Both"
+            value="both"
+        />
       </el-select>
       <span v-if="validationErrors['gender']"> {{ validationErrors['gender'] }}</span>
     </el-form-item>
