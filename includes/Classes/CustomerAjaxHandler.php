@@ -76,6 +76,7 @@ class CustomerAjaxHandler
         $myRooms = (new Bookings())->getMyBookings($current_user->ID, ['room_id']);
 
 
+
         $myReservationIds = [];
         foreach ($myRooms as $key => $value) {
             $myReservationIds[] = $value->room_id;

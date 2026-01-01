@@ -14,13 +14,19 @@ const form = ref({
 })
 
 const requiredFields = ['room_no', 'floor_no', 'total_seat', 'gender'];
+const requiredFieldsTitle = {
+  'room_no': 'Room Number',
+  'floor_no': 'Floor Number',
+  'total_seat': 'Total Seat',
+  'gender': 'Gender',
+};
 const validationErrors = ref({});
 const addRoom = () => {
   validationErrors.value = {};
   Object.keys(form.value).forEach((key) => {
     const value = (form.value[key] ?? "").toString();
     if (value.length < 1 && requiredFields.includes(key)) {
-      validationErrors.value[key] = key + ' Is Required';
+      validationErrors.value[key] = requiredFieldsTitle[key] + ' Is Required';
     }
   })
   if (!Object.keys(validationErrors.value).length) {
@@ -39,9 +45,9 @@ const addRoom = () => {
 const clearForm = () => {
   form.value = {
     room_no: '',
-    gender: '',
-    floor_no: '',
-    total_seat: 0,
+    gender: 'male',
+    floor_no: '1',
+    total_seat: 1,
     info: '',
     status: 'open'
   };
@@ -62,7 +68,7 @@ defineExpose({clearForm})
 
     <el-form-item label="Floor Number">
       <el-input v-model="form.floor_no" autocomplete="off"/>
-      <span v-if="validationErrors['floor_no']"> {{ validationErrors['room_no'] }}</span>
+      <span v-if="validationErrors['floor_no']"> {{ validationErrors['floor_no'] }}</span>
     </el-form-item>
 
     <el-form-item label="Gender">

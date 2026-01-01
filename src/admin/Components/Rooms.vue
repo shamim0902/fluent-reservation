@@ -11,7 +11,8 @@
       <div class="fluentreservation_table_header">
         <div class="fluentreservation_table_header_inner">
           <div class="fluentreservation_table_header_inner_left">
-            <el-input v-model="search" placeholder="Search" clearable size="large" @keyup.enter="getRooms" @clear="getRooms" />
+            <el-input v-model="search" placeholder="Search" clearable size="large" @keyup.enter="getRooms"
+                      @clear="getRooms"/>
           </div>
         </div>
       </div>
@@ -21,15 +22,15 @@
           <el-table-column label="Room Number" prop="room_no"/>
           <el-table-column label="Floor" prop="floor_no"/>
 
-          <el-table-column label="Gender" >
+          <el-table-column label="Gender">
             <template #default="scope">
-              <span style="text-transform: capitalize">{{scope.row.gender.length?scope.row.gender:"male"}}</span>
+              <span style="text-transform: capitalize">{{ scope.row.gender.length ? scope.row.gender : "male" }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="Status" >
+          <el-table-column label="Status">
             <template #default="scope">
-              <span style="text-transform: capitalize">{{scope.row.status.length?scope.row.status:"Open"}}</span>
+              <span style="text-transform: capitalize">{{ scope.row.status.length ? scope.row.status : "Open" }}</span>
             </template>
           </el-table-column>
           <el-table-column label="Total Occupancy" prop="total_seat"/>
@@ -53,32 +54,37 @@
               openEditModal(scope.row);
             }" plain>Edit
               </el-button>
-              <el-button  size="small" @click="confirmDelete(scope.row.id)">
+              <el-button size="small" @click="confirmDelete(scope.row.id)">
                 Remove
               </el-button>
             </template>
           </el-table-column>
         </el-table>
-
       </div>
+
+    </div>
+
+
+    <div class="text-right p-4 mt-2 bg-white rounded-s">
+      Total Seat: {{ totalSeat }}
     </div>
     <div v-if="false" class="fluent_reservation_admin_header">
       <div style="margin-top: 20px">
-<!--        <el-button type="primary" @click="openAddModal">Add Room</el-button>-->
+        <!--        <el-button type="primary" @click="openAddModal">Add Room</el-button>-->
       </div>
       <el-table :data="rooms" style="width: 100%">
         <el-table-column label="Room Number" prop="room_no"/>
         <el-table-column label="Floor" prop="floor_no"/>
 
-        <el-table-column label="Gender" >
+        <el-table-column label="Gender">
           <template #default="scope">
-            <span style="text-transform: capitalize">{{scope.row.gender.length?scope.row.gender:"male"}}</span>
+            <span style="text-transform: capitalize">{{ scope.row.gender.length ? scope.row.gender : "male" }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="Status" >
+        <el-table-column label="Status">
           <template #default="scope">
-            <span style="text-transform: capitalize">{{scope.row.status.length?scope.row.status:"Open"}}</span>
+            <span style="text-transform: capitalize">{{ scope.row.status.length ? scope.row.status : "Open" }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Total Occupancy" prop="total_seat"/>
@@ -102,7 +108,7 @@
               openEditModal(scope.row);
             }" plain>Edit
             </el-button>
-            <el-button  size="small" @click="confirmDelete(scope.row.id)">
+            <el-button size="small" @click="confirmDelete(scope.row.id)">
               Remove
             </el-button>
           </template>
@@ -150,11 +156,12 @@ export default {
       showAddModal: false,
       showEditModal: false,
       currentEditableRoom: {},
-      confirmation_url: ''
+      confirmation_url: '',
+      totalSeat: 0
     }
   },
   methods: {
-    getConfirmation(){
+    getConfirmation() {
       this.$adminAjax({
         method: 'get',
         'confirmation_url': this.confirmation_url,
@@ -199,7 +206,7 @@ export default {
         nonce: window.fluentReservationVars.nonce
       })
           .then(res => {
-              this.getRooms();
+            this.getRooms();
           })
     },
     getRooms() {
@@ -209,13 +216,19 @@ export default {
         nonce: window.fluentReservationVars.nonce
       })
           .then(res => {
+
+            this.totalSeat = 0;
             this.rooms = res.data.rooms;
+
+            for (let i = 0; i < this.rooms.length; i++) {
+              this.totalSeat += parseInt(this.rooms[i].total_seat);
+            }
           })
     },
     openAddModal() {
       this.showAddModal = true;
       nextTick(() => {
-        this.$refs.room_add_form.clearForm()
+        this.$refs.room_form.clearForm()
       })
     },
 

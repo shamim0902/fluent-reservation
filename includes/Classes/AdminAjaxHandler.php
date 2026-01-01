@@ -39,19 +39,19 @@ class AdminAjaxHandler
         $route = sanitize_text_field($_REQUEST['route']);
 
         $validRoutes = [
-            'getRooms' => 'getRooms',
-            'addRoom' => 'addRoom',
-            'updateRoom' => 'updateRoom',
-            'bookNow' => 'bookNow',
-            'seeBookingPersons' => 'seeBookingPersons',
-            'cancelBooking' => 'cancelBooking',
-            'getBookings' => 'getBookings',
+            'getRooms'             => 'getRooms',
+            'addRoom'              => 'addRoom',
+            'updateRoom'           => 'updateRoom',
+            'bookNow'              => 'bookNow',
+            'seeBookingPersons'    => 'seeBookingPersons',
+            'cancelBooking'        => 'cancelBooking',
+            'getBookings'          => 'getBookings',
             'getAdminBookableRoom' => 'getAdminBookableRoom',
-            'addAdminBooking' => 'addAdminBooking',
-            'deleteBookings' => 'deleteBookings',
-            'deleteRooms' => 'deleteRooms',
-            'updateConfirmation' => 'updateConfirmation',
-            'getConfirmation' => 'getConfirmation'
+            'addAdminBooking'      => 'addAdminBooking',
+            'deleteBookings'       => 'deleteBookings',
+            'deleteRooms'          => 'deleteRooms',
+            'updateConfirmation'   => 'updateConfirmation',
+            'getConfirmation'      => 'getConfirmation'
         ];
 
         if (isset($validRoutes[$route])) {
@@ -76,8 +76,8 @@ class AdminAjaxHandler
         (new Bookings())->deleteBookings(intval($_REQUEST['booking_id']));
 
         wp_send_json_success([
-                'message' => 'Booking deleted!',
-                'status' => true
+            'message' => 'Booking deleted!',
+            'status'  => true
         ], 200);
 
     }
@@ -87,8 +87,8 @@ class AdminAjaxHandler
         $confirmationUrl = get_option('fluent_reservation_confirmation_url');
         wp_send_json_success(
             [
-                'confirmation_url' =>  $confirmationUrl ? $confirmationUrl : '',
-                'message' => 'fetched'
+                'confirmation_url' => $confirmationUrl ? $confirmationUrl : '',
+                'message'          => 'fetched'
             ]
         );
     }
@@ -128,7 +128,7 @@ class AdminAjaxHandler
 
         wp_send_json_success([
             'message' => 'Rooms deleted!',
-            'status' => true
+            'status'  => true
         ], 200);
 
     }
@@ -138,10 +138,10 @@ class AdminAjaxHandler
         $booking = (new Bookings());
         $data = $_REQUEST['data'];
 
-        if(empty($data['room_id'])) {
+        if (empty($data['room_id'])) {
             wp_send_json_error(
-              ['message' => 'Please select room!'],
-              423
+                ['message' => 'Please select room!'],
+                423
             );
         }
 
@@ -169,10 +169,15 @@ class AdminAjaxHandler
             );
         }
 
-        global $current_user;
+        $email = sanitize_email($data['email']);
+        //get userid by email
+        $user = get_user_by('email', $email);
+        if ($user) {
+            $data['user_id'] = $user->ID;
+        } else {
+            $data['user_id'] = 0;
+        }
 
-
-        $data['user_id'] = $current_user->ID;
 
         wp_send_json_success(
             [
@@ -181,6 +186,7 @@ class AdminAjaxHandler
             , 200
         );
     }
+
     public function getBookings()
     {
 
@@ -215,7 +221,7 @@ class AdminAjaxHandler
         wp_send_json_success(
             [
                 'message' => 'Reservation canceled!',
-                'status' => true
+                'status'  => true
             ]
         );
 
@@ -254,7 +260,7 @@ class AdminAjaxHandler
 
         wp_send_json_success([
             'bookings' => implode('<br/>', $names),
-            'status' => true
+            'status'   => true
         ], 200);
     }
 
@@ -314,19 +320,19 @@ class AdminAjaxHandler
         }
 
         $data = [
-            'name' => $current_user->display_name,
-            'email' => $current_user->user_email,
-            'user_id' => $current_user->ID,
-            'room_id' => $roomId,
+            'name'        => $current_user->display_name,
+            'email'       => $current_user->user_email,
+            'user_id'     => $current_user->ID,
+            'room_id'     => $roomId,
             'booked_seat' => 1
         ];
 
         $res = (new Bookings())->addBooking($data);
         if ($res) {
             wp_send_json_success(
-                [   'status' => true,
-                    'room_id' => (new Bookings())->getBookings($res)[0]->room_no,
-                    'message' => 'Reservation updates!'
+                ['status'  => true,
+                 'room_id' => (new Bookings())->getBookings($res)[0]->room_no,
+                 'message' => 'Reservation updates!'
                 ], 200
             );
         }
