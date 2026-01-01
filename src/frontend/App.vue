@@ -144,7 +144,7 @@ onMounted(() => {
             <p class="text-slate-600">Select and manage your room reservations</p>
           </div>
 
-          <div class="mb-6">
+          <div class="mb-6" v-if="!loading">
             <div class="flex items-center justify-between flex-wrap gap-2">
               <div class="flex items-center gap-2">
                 <button
@@ -169,7 +169,7 @@ onMounted(() => {
                   Female
                 </button>
               </div>
-              <div class="ml-auto w-full sm:w-64">
+              <div class="ml-auto w-full sm:w-64" v-if="false">
                 <input
                     v-model="searchQuery"
                     type="text"
