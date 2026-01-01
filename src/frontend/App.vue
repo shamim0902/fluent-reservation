@@ -154,7 +154,7 @@ onMounted(() => {
           <div class="mb-8">
             <h1 class="text-3xl font-bold text-slate-800 mb-2">Room Booking System</h1>
           <p class="text-slate-600 !mb-2">Select and manage your room reservations</p>
-            <p class="text-orange-400" v-if="!loading">Note: If you have a guest with you find your name under the booking, and book this room</p>
+            <p class="text-orange-400" v-if="!loading">Note: If you have a guest with you find your name like 'Your Name (Guest)' under the booking, and book this room</p>
           </div>
 
           <div class="mb-6" v-if="!loading">
@@ -227,19 +227,19 @@ onMounted(() => {
               <div class="p-6">
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center space-x-2">
-                    <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-slate-500 frev-room-no-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    <h2 class="text-lg font-bold text-slate-800 !m-0">Room {{ room.room_no }}</h2>
+                    <h2 class="text-lg font-bold text-slate-800 !m-0 frev-room-no">Room {{ room.room_no }}</h2>
                   </div>
                   <span
                       :class="room.isBooked
                                         ? 'bg-red-100 text-red-700'
                                         : 'bg-green-100 text-green-700'"
-                      class="px-3 py-1 rounded-full text-xs font-semibold"
+                      class="px-3 py-1 rounded-full text-xs font-semibold frev-room-availability"
                   >
                                     {{ room.isBooked ? 'BOOKED' : 'AVAILABLE' }}
                                 </span>
@@ -247,7 +247,7 @@ onMounted(() => {
 
                 <div class="space-y-3 mb-6">
                   <div class="flex items-center justify-between text-sm">
-                    <span class="text-slate-600 font-medium">Gender Preference:</span>
+                    <span class="text-slate-600 font-medium frev-gender-label">Gender Preference:</span>
 
 
                     <div class="flex items-center space-x-2">
