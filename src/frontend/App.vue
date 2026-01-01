@@ -31,6 +31,7 @@ const hasError = ref(false);
 
 const activeFilter = ref('all');
 const searchQuery = ref('');
+const availableOnly = ref(false);
 const filteredRooms = computed(() => {
   const list = rooms.value || [];
   let genderFiltered = list;
@@ -40,13 +41,17 @@ const filteredRooms = computed(() => {
     genderFiltered = list.filter(r => r.gender === 'female' || r.gender === 'both');
   }
   const q = (searchQuery.value || '').toString().trim().toLowerCase();
-  if (!q) {
-    return genderFiltered;
+  let searchFiltered = genderFiltered;
+  if (q) {
+    searchFiltered = genderFiltered.filter(r => {
+      const name = (r.name || r.room_no || '').toString().toLowerCase();
+      return name.includes(q);
+    });
   }
-  return genderFiltered.filter(r => {
-    const name = (r.name || r.room_no || '').toString().toLowerCase();
-    return name.includes(q);
-  });
+  if (availableOnly.value) {
+    searchFiltered = searchFiltered.filter(r => (r.available || 0) > 0);
+  }
+  return searchFiltered;
 });
 
 
@@ -168,6 +173,14 @@ onMounted(() => {
                 >
                   Female
                 </button>
+                <label class="ml-2 inline-flex items-center gap-2 select-none">
+                  <input
+                      v-model="availableOnly"
+                      type="checkbox"
+                      class="w-4 h-4 accent-blue-600"
+                  />
+                  <span class="text-sm font-semibold text-slate-700">Available Only</span>
+                </label>
               </div>
               <div class="ml-auto w-full sm:w-64">
                 <input
