@@ -153,7 +153,8 @@ onMounted(() => {
         <div class="max-w-6xl mx-auto">
           <div class="mb-8">
             <h1 class="text-3xl font-bold text-slate-800 mb-2">Room Booking System</h1>
-            <p class="text-slate-600">Select and manage your room reservations</p>
+          <p class="text-slate-600 !mb-2">Select and manage your room reservations</p>
+            <p class="text-orange-400" v-if="!loading">Note: If you have a guest with you find your name under the booking, and book this room</p>
           </div>
 
           <div class="mb-6" v-if="!loading">
