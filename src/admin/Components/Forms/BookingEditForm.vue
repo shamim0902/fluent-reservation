@@ -1,8 +1,8 @@
 <script setup>
 import {ref, getCurrentInstance, onMounted, watch} from "vue";
 
-const props = defineProps(['booking']);
-const emit = defineEmits(['onSuccess'])
+const props = defineProps(['booking', 'showEditBookingModal']);
+const emit = defineEmits(['onSuccess', 'onClose'])
 
 const $this = getCurrentInstance().ctx;
 const form = ref({
@@ -11,6 +11,8 @@ const form = ref({
   email: '',
   room_id: '',
 })
+
+const showModal = ref(props.showEditBookingModal);
 
 const requiredFields = ['name', 'email', 'room_id'];
 const validationErrors = ref({});
@@ -70,48 +72,54 @@ const getBookableRooms = () => {
       })
 }
 
+//add watch for showEditBookingModal
+watch(() => props.showEditBookingModal, () => {
+  showModal.value = props.showEditBookingModal;
+})
+
 
 </script>
 
 <template>
-
-  <el-form :model="form" label-position="top">
-    <el-form-item label="Name">
-      <el-input v-model="form.name" autocomplete="off"/>
-      <span v-if="validationErrors['name']"> {{ validationErrors['name'] }}</span>
-    </el-form-item>
-
-
-    <el-form-item label="Email">
-      <el-input type="email" v-model="form.email" autocomplete="off"/>
-      <span v-if="validationErrors['email']"> {{ validationErrors['email'] }}</span>
-
-    </el-form-item>
+  <el-dialog v-model="showModal" title="Edit Booking" @open="getBookableRooms" @close="emit('onClose')">
+    <el-form :model="form" label-position="top">
+      <el-form-item label="Name">
+        <el-input v-model="form.name" autocomplete="off"/>
+        <span v-if="validationErrors['name']"> {{ validationErrors['name'] }}</span>
+      </el-form-item>
 
 
-    <el-form-item label="Room">
-      <el-select
-          v-model="form.room_id"
-          placeholder="Select"
-          size="large"
-          style="width: 100%"
-      >
-        <el-option
-            v-for="room of availableRooms"
-            :key="room.id"
-            :label="room.room_no +' -Floor: '+ room.floor_no+ ' Available: ' + (room.total_seat - room.total_bookings)"
-            :value="room.id"
-        />
+      <el-form-item label="Email">
+        <el-input type="email" v-model="form.email" autocomplete="off"/>
+        <span v-if="validationErrors['email']"> {{ validationErrors['email'] }}</span>
+
+      </el-form-item>
 
 
-      </el-select>
-      <span v-if="validationErrors['room_id']"> {{ validationErrors['room_id'] }}</span>
+      <el-form-item label="Room">
+        <el-select
+            v-model="form.room_id"
+            placeholder="Select"
+            size="large"
+            style="width: 100%"
+        >
+          <el-option
+              v-for="room of availableRooms"
+              :key="room.id"
+              :label="room.room_no +' -Floor: '+ room.floor_no+ ' Available: ' + (room.total_seat - room.total_bookings)"
+              :value="room.id"
+          />
 
-    </el-form-item>
+
+        </el-select>
+        <span v-if="validationErrors['room_id']"> {{ validationErrors['room_id'] }}</span>
+
+      </el-form-item>
 
 
-    <el-button @click="updateBooking" type="primary">Update Booking</el-button>
-  </el-form>
+      <el-button @click="updateBooking" type="primary">Update Booking</el-button>
+    </el-form>
+  </el-dialog>
 
 </template>
 

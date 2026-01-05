@@ -15,7 +15,8 @@
               'main_room_id'
 
           ]);
-        }" type="primary">Export Booking</el-button>
+        }" type="primary">Export Booking
+        </el-button>
 
       </div>
     </div>
@@ -64,9 +65,10 @@
       <BookingAddForm ref="room_form" @on-success="onBookingAdded"/>
     </el-dialog>
 
-    <el-dialog v-model="showEditBookingModal" title="Edit Booking">
-      <BookingEditForm :booking="currentEditingBooking" @on-success="onBookingUpdated"/>
-    </el-dialog>
+
+    <BookingEditForm :booking="currentEditingBooking" @on-success="onBookingUpdated"
+                     :showEditBookingModal="showEditBookingModal" @onClose="showEditBookingModal = false"/>
+
   </div>
 </template>
 
@@ -158,7 +160,7 @@ const exportToCSV = (data, filename = 'export.csv', exclude = []) => {
     )
   ].join('\n');
 
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
   downloadBlob(blob, filename);
 };
 
