@@ -48,6 +48,7 @@ class AdminAjaxHandler
             'getBookings'          => 'getBookings',
             'getAdminBookableRoom' => 'getAdminBookableRoom',
             'addAdminBooking'      => 'addAdminBooking',
+            'updateAdminBooking'   => 'updateAdminBooking',
             'deleteBookings'       => 'deleteBookings',
             'deleteRooms'          => 'deleteRooms',
             'updateConfirmation'   => 'updateConfirmation',
@@ -60,6 +61,82 @@ class AdminAjaxHandler
             return $this->{$validRoutes[$route]}($data);
         }
         do_action('fluent-reservation/admin_ajax_handler_catch', $route);
+    }
+
+    public function updateAdminBooking()
+    {
+        $bookingModel = (new Bookings());
+        $data = $_REQUEST['data'];
+
+        if (empty($data['id'])) {
+            wp_send_json_error(['message' => 'Booking ID missing'], 423);
+        }
+
+        $bookingId = intval($data['id']);
+        $existingBooking = $bookingModel->find($bookingId);
+
+        if (!$existingBooking) {
+            wp_send_json_error(['message' => 'Booking not found'], 404);
+        }
+
+        if (empty($data['room_id'])) {
+            wp_send_json_error(
+                ['message' => 'Please select room!'],
+                423
+            );
+        }
+
+        $roomId = intval($data['room_id']);
+
+        if ($roomId != $existingBooking->room_id) {
+            $room = (new Rooms())->find($roomId);
+
+            if (empty($room)) {
+                wp_send_json_error(
+                    [
+                        'message' => "No room found!"
+                    ],
+                    423
+                );
+            }
+
+            $previousBookings = (new Bookings())->getBookingsByRoom($roomId);
+            $previousBookingCount = count($previousBookings);
+
+            if ($previousBookingCount >= $room->total_seat) {
+                wp_send_json_error(
+                    [
+                        'message' => "No available seat in the selected room"
+                    ],
+                    423
+                );
+            }
+        }
+
+        $email = sanitize_email($data['email']);
+        //get userid by email
+        $user = get_user_by('email', $email);
+        if ($user) {
+            $data['user_id'] = $user->ID;
+        } else {
+            $data['user_id'] = 0;
+        }
+        
+        $updateData = [
+            'name'    => sanitize_text_field($data['name']),
+            'email'   => $email,
+            'user_id' => $data['user_id'],
+            'room_id' => $roomId
+        ];
+
+        $bookingModel->updateBooking($bookingId, $updateData);
+
+        wp_send_json_success(
+            [
+                'message' => 'Booking updated successfully'
+            ]
+            , 200
+        );
     }
 
     public function deleteBookings()
@@ -384,9 +461,10 @@ class AdminAjaxHandler
 
     public function getAdminBookableRoom()
     {
+        $roomId = isset($_REQUEST['room_id']) ? intval($_REQUEST['room_id']) : 0;
         wp_send_json_success(
             [
-                'rooms' => (new Rooms())->getAdminBookableRooms()
+                'rooms' => (new Rooms())->getAdminBookableRooms($roomId)
             ]
             , 200);
     }

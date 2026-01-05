@@ -28,10 +28,11 @@ class Rooms
         return fluentReservationDb()->table($this->table)->where('id', $roomId)->delete();
     }
 
-    public function getAdminBookableRooms(): array
+    public function getAdminBookableRooms($roomId = null): array
     {
         global $wpdb;
-        return fluentReservationDb()
+
+        $query = fluentReservationDb()
             ->table('fluent_reservation_rooms')
             ->leftJoin(
                 'fluent_reservation_bookings',
@@ -43,12 +44,32 @@ class Rooms
                 'fluent_reservation_rooms.*',
                 fluentReservationDb()->raw("COUNT({$wpdb->prefix}fluent_reservation_bookings.id) AS total_bookings")
             )
-//            ->where('status','!=','locked')
             ->groupBy('fluent_reservation_rooms.id')
-            ->groupBy('fluent_reservation_rooms.total_seat')
-            ->having('total_bookings', '<', fluentReservationDb()->raw($wpdb->prefix . 'fluent_reservation_rooms.total_seat'))
-            ->get();
+            ->groupBy('fluent_reservation_rooms.total_seat');
+
+        // Seats available
+        $query->having(
+            'total_bookings',
+            '<',
+            fluentReservationDb()->raw($wpdb->prefix . 'fluent_reservation_rooms.total_seat')
+        );
+
+        // Always include this room
+        if ($roomId) {
+            $query->orHaving(
+                'fluent_reservation_rooms.id',
+                '=',
+                (int) $roomId
+            );
+        }
+
+        return $query->get();
     }
+
+
+
+
+
 
     public function find($id): ?\stdClass
     {

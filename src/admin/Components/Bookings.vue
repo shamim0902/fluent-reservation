@@ -48,6 +48,7 @@
           <el-table-column label="Floor No" prop="floor_no"/>
           <el-table-column>
             <template #default="scope">
+              <el-button size="small" @click="openEditBookingModal(scope.row)">Edit</el-button>
               <el-button size="small" @click="confirmDelete(scope.row.id)">Delete</el-button>
             </template>
           </el-table-column>
@@ -62,12 +63,17 @@
     <el-dialog v-model="showAddBookingModal" title="Add Room">
       <BookingAddForm ref="room_form" @on-success="onBookingAdded"/>
     </el-dialog>
+
+    <el-dialog v-model="showEditBookingModal" title="Edit Booking">
+      <BookingEditForm :booking="currentEditingBooking" @on-success="onBookingUpdated"/>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import {getCurrentInstance, onMounted, ref} from "vue";
 import BookingAddForm from "./Forms/BookingAddForm.vue";
+import BookingEditForm from "./Forms/BookingEditForm.vue";
 
 const $this = getCurrentInstance().ctx;
 const bookings = ref([]);
@@ -117,6 +123,19 @@ const deleteReservation = id => {
 const onBookingAdded = () => {
   showAddBookingModal.value = false;
   getBookings();
+}
+
+const showEditBookingModal = ref(false)
+const currentEditingBooking = ref(null)
+
+const openEditBookingModal = (booking) => {
+  currentEditingBooking.value = booking
+  showEditBookingModal.value = true
+}
+
+const onBookingUpdated = () => {
+  showEditBookingModal.value = false
+  getBookings()
 }
 
 const exportToCSV = (data, filename = 'export.csv', exclude = []) => {
