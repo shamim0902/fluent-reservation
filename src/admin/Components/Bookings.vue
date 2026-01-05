@@ -4,6 +4,19 @@
       <h1 class="fluent_reservation_page_heading--title">Booking</h1>
       <div class="fluent_reservation_page_heading--actions">
         <el-button @click="openAddBookingModal" type="primary">Add Booking</el-button>
+        <el-button @click="()=>{
+          exportToCSV(bookings, 'Bookings', [
+              'id',
+              'user_id',
+              'room_id',
+              'info',
+              'booked_seat',
+              'created_at',
+              'main_room_id'
+
+          ]);
+        }" type="primary">Export Booking</el-button>
+
       </div>
     </div>
 
@@ -12,17 +25,27 @@
       <div class="fluentreservation_table_header">
         <div class="fluentreservation_table_header_inner">
           <div class="fluentreservation_table_header_inner_left">
-            <el-input v-model="search" placeholder="Search" size="large" clearable @keyup.enter="getBookings" @clear="getBookings" />
+            <el-input v-model="search" placeholder="Search" size="large" clearable @keyup.enter="getBookings"
+                      @clear="getBookings"/>
           </div>
         </div>
       </div>
 
       <div class="fluentreservation_table_body">
         <el-table :data="bookings" style="width: 100%">
+          <el-table-column
+              label="SL"
+              width="60"
+              align="center"
+          >
+            <template #default="scope">
+              {{ scope.$index + 1 }}
+            </template>
+          </el-table-column>
           <el-table-column label="Booked By" prop="name"/>
           <el-table-column label="Email" prop="email"/>
           <el-table-column label="Room No" prop="room_no"/>
-          <el-table-column label="Floor No" prop="floor_no" />
+          <el-table-column label="Floor No" prop="floor_no"/>
           <el-table-column>
             <template #default="scope">
               <el-button size="small" @click="confirmDelete(scope.row.id)">Delete</el-button>
@@ -31,18 +54,8 @@
         </el-table>
       </div>
     </div>
-    <div v-if="false" class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
-      <el-table :data="bookings" style="width: 100%">
-        <el-table-column label="Booked By" prop="name"/>
-        <el-table-column label="Email" prop="email"/>
-        <el-table-column label="Room No" prop="room_no"/>
-        <el-table-column label="Floor No" prop="floor_no"/>
-        <el-table-column>
-          <template #default="scope">
-            <el-button type="danger" size="small" @click="confirmDelete(scope.row.id)">delete</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+    <div class="text-right p-4 mt-2 bg-white rounded-s">
+      Total Booking: {{ bookings.length }}
     </div>
 
 
@@ -89,7 +102,7 @@ const confirmDelete = id => {
 
 const deleteReservation = id => {
   $this.$adminAjax({
-    method:'post',
+    method: 'post',
     route: 'deleteBookings',
     booking_id: id,
     nonce: window.fluentReservationVars.nonce
@@ -105,4 +118,44 @@ const onBookingAdded = () => {
   showAddBookingModal.value = false;
   getBookings();
 }
+
+const exportToCSV = (data, filename = 'export.csv', exclude = []) => {
+  if (!Array.isArray(data) || !data.length) {
+    throw new Error('No data to export');
+  }
+
+  const excludeSet = new Set(exclude);
+
+  const headers = Object.keys(data[0]).filter(
+      key => !excludeSet.has(key)
+  );
+
+  const csv = [
+    headers.join(','),
+    ...data.map(row =>
+        headers.map(field =>
+            `"${String(row[field] ?? '').replace(/"/g, '""')}"`
+        ).join(',')
+    )
+  ].join('\n');
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  downloadBlob(blob, filename);
+};
+
+
+const downloadBlob = (blob, filename) => {
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+
 </script>

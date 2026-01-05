@@ -19,6 +19,15 @@
 
       <div class="fluentreservation_table_body">
         <el-table :data="rooms" style="width: 100%">
+          <el-table-column
+              label="SL"
+              width="60"
+              align="center"
+          >
+            <template #default="scope">
+              {{ scope.$index + 1 }}
+            </template>
+          </el-table-column>
           <el-table-column label="Room Number" prop="room_no"/>
           <el-table-column label="Floor" prop="floor_no"/>
 
@@ -68,67 +77,9 @@
     <div class="text-right p-4 mt-2 bg-white rounded-s">
       Total Seat: {{ totalSeat }}
     </div>
-    <div v-if="false" class="fluent_reservation_admin_header">
-      <div style="margin-top: 20px">
-        <!--        <el-button type="primary" @click="openAddModal">Add Room</el-button>-->
-      </div>
-      <el-table :data="rooms" style="width: 100%">
-        <el-table-column label="Room Number" prop="room_no"/>
-        <el-table-column label="Floor" prop="floor_no"/>
 
-        <el-table-column label="Gender">
-          <template #default="scope">
-            <span style="text-transform: capitalize">{{ scope.row.gender.length ? scope.row.gender : "male" }}</span>
-          </template>
-        </el-table-column>
 
-        <el-table-column label="Status">
-          <template #default="scope">
-            <span style="text-transform: capitalize">{{ scope.row.status.length ? scope.row.status : "Open" }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="Total Occupancy" prop="total_seat"/>
 
-        <el-table-column label="Info">
-          <template #default="scope">
-            <el-popover effect="light" trigger="hover" placement="top" width="auto">
-              <template #default>
-                <div>Info: {{ scope.row.info }}</div>
-              </template>
-              <template #reference>
-                <el-tag>Info</el-tag>
-              </template>
-            </el-popover>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="Action">
-          <template #default="scope">
-            <el-button size="small" type="warning" @click="()=>{
-              openEditModal(scope.row);
-            }" plain>Edit
-            </el-button>
-            <el-button size="small" @click="confirmDelete(scope.row.id)">
-              Remove
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <div>
-      </div>
-
-      <br/>
-    </div>
-
-    <div style="width:500px;" v-if="false">
-      <h3>Redirect after booking success:</h3>
-      <el-input v-model="confirmation_url">
-        <template #append>
-          <el-button @click="updateConfirmation">Update</el-button>
-        </template>
-      </el-input>
-    </div>
 
 
     <el-dialog v-model="showAddModal" title="Add Room">
