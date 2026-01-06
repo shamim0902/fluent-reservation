@@ -4,6 +4,7 @@ namespace fluentReservation\Classes;
 
 use fluentReservation\Models\Bookings;
 use fluentReservation\Models\Rooms;
+use fluentReservation\Models\Events;
 
 class AdminAjaxHandler
 {
@@ -50,6 +51,10 @@ class AdminAjaxHandler
             'addAdminBooking'      => 'addAdminBooking',
             'updateAdminBooking'   => 'updateAdminBooking',
             'deleteBookings'       => 'deleteBookings',
+            'getEvents'            => 'getEvents',
+            'addEvent'             => 'addEvent',
+            'updateEvent'          => 'updateEvent',
+            'deleteEvent'          => 'deleteEvent',
             'deleteRooms'          => 'deleteRooms',
             'updateConfirmation'   => 'updateConfirmation',
             'getConfirmation'      => 'getConfirmation'
@@ -467,5 +472,102 @@ class AdminAjaxHandler
                 'rooms' => (new Rooms())->getAdminBookableRooms($roomId)
             ]
             , 200);
+    }
+
+    public function getEvents()
+    {
+        $data = [
+            'search' => isset($_REQUEST['search']) ? sanitize_text_field($_REQUEST['search']) : ''
+        ];
+        wp_send_json_success(
+            [
+                'events' => (new Events())->getEvents($data)
+            ]
+            , 200);
+    }
+
+    public function addEvent()
+    {
+        $data = $_REQUEST['data'];
+        
+        // Basic validation
+        if (empty($data['title'])) {
+            wp_send_json_error(['message' => 'Event Title is required'], 423);
+        }
+        if (empty($data['start_date']) || empty($data['end_date'])) {
+            wp_send_json_error(['message' => 'Start Date and End Date are required'], 423);
+        }
+
+        // Sanitize
+        $eventData = [
+            'title' => sanitize_text_field($data['title']),
+            'description' => wp_kses_post($data['description']),
+            'start_date' => sanitize_text_field($data['start_date']),
+            'end_date' => sanitize_text_field($data['end_date'])
+        ];
+
+        if ($id = (new Events())->addEvent($eventData)) {
+            wp_send_json_success(
+                [
+                    'message' => 'Event added successfully',
+                    'id' => $id,
+                    'events' => (new Events())->getEvents()
+                ]
+                , 200);
+        } else {
+            wp_send_json_error([
+                'message' => "Can't add event"
+            ]);
+        }
+    }
+
+    public function updateEvent()
+    {
+        $data = $_REQUEST['data'];
+        $id = intval($data['id']);
+
+        if (!$id) {
+             wp_send_json_error(['message' => 'Event ID is required'], 423);
+        }
+
+        // Basic validation
+        if (empty($data['title'])) {
+            wp_send_json_error(['message' => 'Event Title is required'], 423);
+        }
+        if (empty($data['start_date']) || empty($data['end_date'])) {
+            wp_send_json_error(['message' => 'Start Date and End Date are required'], 423);
+        }
+
+        // Sanitize
+        $eventData = [
+            'title' => sanitize_text_field($data['title']),
+            'description' => wp_kses_post($data['description']),
+            'start_date' => sanitize_text_field($data['start_date']),
+            'end_date' => sanitize_text_field($data['end_date'])
+        ];
+
+        (new Events())->updateEvent($id, $eventData);
+
+        wp_send_json_success(
+            [
+                'message' => 'Event updated successfully',
+                'events' => (new Events())->getEvents()
+            ]
+            , 200);
+    }
+
+    public function deleteEvent()
+    {
+        $id = intval($_REQUEST['event_id']);
+        if (!$id) {
+            wp_send_json_error(['message' => 'Invalid Event ID'], 423);
+        }
+
+        (new Events())->deleteEvent($id);
+
+        wp_send_json_success([
+            'message' => 'Event deleted!',
+            'status'  => true
+        ], 200);
     }
 }

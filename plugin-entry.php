@@ -73,6 +73,11 @@ class fluentReservation {
                 'manage_options',
                 'admin.php?page=fluent-reservation.php#/bookings',
             );
+            $submenu['fluent-reservation.php']['events'] = array(
+                'Events',
+                'manage_options',
+                'admin.php?page=fluent-reservation.php#/events',
+            );
         });
     }
 
@@ -127,6 +132,9 @@ class fluentReservation {
                     </router-link>
                     <router-link to="/bookings">
                         Bookings
+                    </router-link>
+                    <router-link to="/events">
+                        Events
                     </router-link>
                     <router-link to="/settings">
                         Settings

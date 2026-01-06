@@ -45,6 +45,8 @@ class Activator
 
         $this->bookingTable();
 
+        $this->eventsTable();
+
     }
 
     public function roomsTable()
@@ -89,6 +91,25 @@ class Activator
         $this->runSQL($sql, $table_name);
     }
 
+
+    public function eventsTable()
+    {
+        global $wpdb;
+        $charset_collate = $wpdb->get_charset_collate();
+        $table_name = $wpdb->prefix . 'fluent_reservation_events';
+        $sql = "CREATE TABLE $table_name (
+            id int(10) NOT NULL AUTO_INCREMENT,
+            title VARCHAR(200) NOT NULL,
+            description LONGTEXT NULL,
+            start_date timestamp NULL DEFAULT NULL,
+            end_date timestamp NULL DEFAULT NULL,
+            created_at timestamp NULL DEFAULT NULL,
+            updated_at timestamp NULL DEFAULT NULL,
+            PRIMARY KEY (id)
+            ) $charset_collate";
+
+        $this->runSQL($sql, $table_name);
+    }
 
     private function runSQL($sql, $tableName)
     {
