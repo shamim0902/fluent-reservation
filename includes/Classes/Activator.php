@@ -56,7 +56,7 @@ class Activator
         $table_name = $wpdb->prefix . 'fluent_reservation_rooms';
         $sql = "CREATE TABLE $table_name (
             id int(10) NOT NULL AUTO_INCREMENT,
-            room_no VARCHAR(20) NOT NULL,
+            room_no VARCHAR(200) NOT NULL,
             floor_no VARCHAR(20) NOT NULL,
             total_seat int(10) NOT NULL,
             status VARCHAR(20) NOT NULL,
